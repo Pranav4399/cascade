@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 
 interface WordData {
@@ -22,11 +21,42 @@ const GameGrid = () => {
   const [userAnswers, setUserAnswers] = useState<string[]>(Array(5).fill(''));
   const [submittedAnswers, setSubmittedAnswers] = useState<string[]>(Array(5).fill(''));
   const [gameComplete, setGameComplete] = useState(false);
+  const [focusedCell, setFocusedCell] = useState<{wordIndex: number, letterIndex: number} | null>(null);
 
-  const handleInputChange = (index: number, value: string) => {
+  const handleLetterInput = (wordIndex: number, letterIndex: number, value: string) => {
+    if (gameComplete) return;
+    
     const newAnswers = [...userAnswers];
-    newAnswers[index] = value.toUpperCase();
-    setUserAnswers(newAnswers);
+    const currentWord = newAnswers[wordIndex] || '';
+    const newWord = currentWord.split('');
+    
+    // Only allow single letters and convert to uppercase
+    if (value.length <= 1 && /^[a-zA-Z]*$/.test(value)) {
+      newWord[letterIndex] = value.toUpperCase();
+      newAnswers[wordIndex] = newWord.join('');
+      setUserAnswers(newAnswers);
+      
+      // Auto-focus next cell if letter was entered
+      if (value && letterIndex < gameWords[wordIndex].length - 1) {
+        setFocusedCell({wordIndex, letterIndex: letterIndex + 1});
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, wordIndex: number, letterIndex: number) => {
+    if (e.key === 'Backspace') {
+      const newAnswers = [...userAnswers];
+      const currentWord = newAnswers[wordIndex] || '';
+      const newWord = currentWord.split('');
+      newWord[letterIndex] = '';
+      newAnswers[wordIndex] = newWord.join('');
+      setUserAnswers(newAnswers);
+      
+      // Focus previous cell on backspace if current cell is empty
+      if (letterIndex > 0 && !currentWord[letterIndex]) {
+        setFocusedCell({wordIndex, letterIndex: letterIndex - 1});
+      }
+    }
   };
 
   const validatePattern = (answers: string[]): boolean => {
@@ -80,31 +110,42 @@ const GameGrid = () => {
     setUserAnswers(Array(5).fill(''));
     setSubmittedAnswers(Array(5).fill(''));
     setGameComplete(false);
+    setFocusedCell(null);
   };
 
   const renderLetterBoxes = (wordIndex: number) => {
     const word = gameWords[wordIndex];
-    const userAnswer = submittedAnswers[wordIndex] || '';
+    const userAnswer = userAnswers[wordIndex] || '';
+    const submittedAnswer = submittedAnswers[wordIndex] || '';
     const boxes = [];
     
     for (let i = 0; i < word.length; i++) {
       const letter = userAnswer[i] || '';
-      const isCorrect = letter === word.answer[i];
+      const submittedLetter = submittedAnswer[i] || '';
+      const isCorrect = submittedLetter === word.answer[i];
       const isHighlighted = i < wordIndex; // Highlight shared prefix letters
+      const isFocused = focusedCell?.wordIndex === wordIndex && focusedCell?.letterIndex === i;
       
       boxes.push(
-        <div
+        <input
           key={i}
+          type="text"
+          value={letter}
+          onChange={(e) => handleLetterInput(wordIndex, i, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e, wordIndex, i)}
+          onFocus={() => setFocusedCell({wordIndex, letterIndex: i})}
+          onBlur={() => setFocusedCell(null)}
           className={`
-            w-10 h-10 border-2 flex items-center justify-center font-bold text-lg
+            w-10 h-10 border-2 flex items-center justify-center font-bold text-lg text-center
             ${isHighlighted ? 'bg-yellow-300 border-yellow-400' : 'bg-gray-100 border-gray-300'}
             ${submittedAnswers[wordIndex] && isCorrect ? 'bg-green-200 border-green-400' : ''}
-            ${submittedAnswers[wordIndex] && !isCorrect && letter ? 'bg-red-200 border-red-400' : ''}
-            transition-colors duration-200
+            ${submittedAnswers[wordIndex] && !isCorrect && submittedLetter ? 'bg-red-200 border-red-400' : ''}
+            ${isFocused ? 'ring-2 ring-blue-400' : ''}
+            transition-colors duration-200 focus:outline-none
           `}
-        >
-          {letter}
-        </div>
+          maxLength={1}
+          disabled={gameComplete}
+        />
       );
     }
     
@@ -114,7 +155,7 @@ const GameGrid = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Synonym Sequence</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">Cascade</h1>
         <p className="text-gray-600">
           Find synonyms that follow the pattern - each word shares more starting letters with the next!
         </p>
@@ -130,15 +171,6 @@ const GameGrid = () => {
             <div className="flex gap-1">
               {renderLetterBoxes(index)}
             </div>
-            
-            <Input
-              value={userAnswers[index]}
-              onChange={(e) => handleInputChange(index, e.target.value)}
-              placeholder={`${word.length} letters`}
-              className="w-40"
-              disabled={gameComplete}
-              maxLength={word.length}
-            />
           </div>
         ))}
       </div>
