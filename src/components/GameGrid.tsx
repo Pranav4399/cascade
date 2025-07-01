@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
+import { HelpCircle } from 'lucide-react';
 
 interface WordData {
   clue: string;
@@ -19,9 +20,32 @@ const gameWords: WordData[] = [
 
 const GameGrid = () => {
   const [userAnswers, setUserAnswers] = useState<string[]>(Array(5).fill(''));
-  const [submittedAnswers, setSubmittedAnswers] = useState<string[]>(Array(5).fill(''));
+  const [validatedAnswers, setValidatedAnswers] = useState<boolean[]>(Array(5).fill(false));
   const [gameComplete, setGameComplete] = useState(false);
   const [focusedCell, setFocusedCell] = useState<{wordIndex: number, letterIndex: number} | null>(null);
+  const [hintsUsed, setHintsUsed] = useState<number[]>(Array(5).fill(0));
+
+  // Auto-validate answers when user completes a word
+  useEffect(() => {
+    const newValidatedAnswers = [...validatedAnswers];
+    let hasChanges = false;
+
+    userAnswers.forEach((answer, index) => {
+      if (answer.length === gameWords[index].length && answer === gameWords[index].answer) {
+        if (!validatedAnswers[index]) {
+          newValidatedAnswers[index] = true;
+          hasChanges = true;
+        }
+      } else if (validatedAnswers[index] && answer !== gameWords[index].answer) {
+        newValidatedAnswers[index] = false;
+        hasChanges = true;
+      }
+    });
+
+    if (hasChanges) {
+      setValidatedAnswers(newValidatedAnswers);
+    }
+  }, [userAnswers, validatedAnswers]);
 
   const handleLetterInput = (wordIndex: number, letterIndex: number, value: string) => {
     if (gameComplete) return;
@@ -102,29 +126,65 @@ const GameGrid = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const useHint = (wordIndex: number) => {
+    const currentHints = hintsUsed[wordIndex];
+    if (currentHints >= gameWords[wordIndex].length) {
+      toast({
+        title: "No more hints",
+        description: "All letters for this word have been revealed!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const newAnswers = [...userAnswers];
+    const currentWord = newAnswers[wordIndex] || '';
+    const correctAnswer = gameWords[wordIndex].answer;
+    const newWord = currentWord.split('');
     
-    setSubmittedAnswers([...userAnswers]);
+    // Find the next empty position to reveal
+    for (let i = 0; i < correctAnswer.length; i++) {
+      if (!newWord[i] || newWord[i] !== correctAnswer[i]) {
+        newWord[i] = correctAnswer[i];
+        break;
+      }
+    }
+    
+    newAnswers[wordIndex] = newWord.join('');
+    setUserAnswers(newAnswers);
+    
+    const newHintsUsed = [...hintsUsed];
+    newHintsUsed[wordIndex] = currentHints + 1;
+    setHintsUsed(newHintsUsed);
+
+    toast({
+      title: "Hint used!",
+      description: `Revealed letter ${currentHints + 1} for "${gameWords[wordIndex].clue}"`,
+    });
   };
 
   const resetGame = () => {
     setUserAnswers(Array(5).fill(''));
-    setSubmittedAnswers(Array(5).fill(''));
+    setValidatedAnswers(Array(5).fill(false));
     setGameComplete(false);
     setFocusedCell(null);
+    setHintsUsed(Array(5).fill(0));
   };
 
   const renderLetterBoxes = (wordIndex: number) => {
     const word = gameWords[wordIndex];
     const userAnswer = userAnswers[wordIndex] || '';
-    const submittedAnswer = submittedAnswers[wordIndex] || '';
+    const isValidated = validatedAnswers[wordIndex];
     const boxes = [];
     
     for (let i = 0; i < word.length; i++) {
       const letter = userAnswer[i] || '';
-      const submittedLetter = submittedAnswer[i] || '';
-      const isCorrect = submittedLetter === word.answer[i];
-      const isHighlighted = i < wordIndex; // Highlight shared prefix letters
+      // Yellow highlight: first box of first row, first two of second row, etc.
+      const isHighlighted = i < wordIndex + 1;
       const isFocused = focusedCell?.wordIndex === wordIndex && focusedCell?.letterIndex === i;
+      const isCorrect = isValidated && letter === word.answer[i];
       
       boxes.push(
         <input
@@ -138,8 +198,8 @@ const GameGrid = () => {
           className={`
             w-10 h-10 border-2 flex items-center justify-center font-bold text-lg text-center
             ${isHighlighted ? 'bg-yellow-300 border-yellow-400' : 'bg-gray-100 border-gray-300'}
-            ${submittedAnswers[wordIndex] && isCorrect ? 'bg-green-200 border-green-400' : ''}
-            ${submittedAnswers[wordIndex] && !isCorrect && submittedLetter ? 'bg-red-200 border-red-400' : ''}
+            ${isValidated && !isHighlighted ? 'bg-green-200 border-green-400' : ''}
+            ${isCorrect ? 'text-green-800' : ''}
             ${isFocused ? 'ring-2 ring-blue-400' : ''}
             transition-colors duration-200 focus:outline-none
           `}
@@ -168,9 +228,20 @@ const GameGrid = () => {
               {word.clue}
             </div>
             
-            <div className="flex gap-1">
+            <div className="flex gap-1 flex-1">
               {renderLetterBoxes(index)}
             </div>
+
+            <Button
+              onClick={() => useHint(index)}
+              variant="outline"
+              size="sm"
+              className="ml-2"
+              disabled={gameComplete || hintsUsed[index] >= word.length}
+            >
+              <HelpCircle className="w-4 h-4 mr-1" />
+              Hint ({hintsUsed[index]}/{word.length})
+            </Button>
           </div>
         ))}
       </div>
@@ -210,6 +281,7 @@ const GameGrid = () => {
           <li>• The first answer can start with any letter</li>
           <li>• The second must start with the same first letter</li>
           <li>• The third must start with the same first two letters, and so on</li>
+          <li>• Use hints if you're stuck - they reveal one letter at a time</li>
         </ul>
       </div>
     </div>
