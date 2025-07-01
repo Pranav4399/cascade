@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
@@ -59,41 +60,11 @@ const GameGrid = () => {
     puzzleCompleteChime.current = { play: playPuzzleChime } as any;
   }, []);
 
-  // Auto-fill cascade letters when a word is solved
-  const autoFillCascadeLetters = (solvedWordIndex: number, newAnswers: string[]) => {
-    const solvedAnswer = gameWords[solvedWordIndex].answer;
-    const updatedAnswers = [...newAnswers];
-    
-    // Fill the cascade letters for all other words
-    for (let wordIndex = 0; wordIndex < gameWords.length; wordIndex++) {
-      if (wordIndex === solvedWordIndex) continue; // Skip the solved word itself
-      
-      const currentWord = updatedAnswers[wordIndex] || '';
-      const newWord = currentWord.split('');
-      
-      // Determine how many letters to fill based on the word's position
-      const lettersToFill = wordIndex + 1;
-      const lettersToTake = Math.min(lettersToFill, solvedAnswer.length);
-      
-      // Fill the required letters from the solved word
-      for (let i = 0; i < lettersToTake; i++) {
-        if (i < gameWords[wordIndex].length) {
-          newWord[i] = solvedAnswer[i];
-        }
-      }
-      
-      updatedAnswers[wordIndex] = newWord.join('');
-    }
-    
-    return updatedAnswers;
-  };
-
   // Auto-validate answers and check for completion
   useEffect(() => {
     const newValidatedAnswers = [...validatedAnswers];
     let hasChanges = false;
     let newlyValidatedWords: number[] = [];
-    let updatedAnswers = [...userAnswers];
 
     userAnswers.forEach((answer, index) => {
       if (answer.length === gameWords[index].length && answer === gameWords[index].answer) {
@@ -101,9 +72,6 @@ const GameGrid = () => {
           newValidatedAnswers[index] = true;
           newlyValidatedWords.push(index);
           hasChanges = true;
-          
-          // Auto-fill cascade letters for other words
-          updatedAnswers = autoFillCascadeLetters(index, updatedAnswers);
         }
       } else if (validatedAnswers[index] && answer !== gameWords[index].answer) {
         newValidatedAnswers[index] = false;
@@ -113,11 +81,6 @@ const GameGrid = () => {
 
     if (hasChanges) {
       setValidatedAnswers(newValidatedAnswers);
-      
-      // Update answers with auto-filled cascade letters
-      if (JSON.stringify(updatedAnswers) !== JSON.stringify(userAnswers)) {
-        setUserAnswers(updatedAnswers);
-      }
       
       // Play chime for newly validated words
       newlyValidatedWords.forEach(() => {
@@ -129,7 +92,7 @@ const GameGrid = () => {
 
     // Check if all answers are validated and puzzle is complete
     const allValidated = newValidatedAnswers.every(validated => validated);
-    const patternValid = validatePattern(updatedAnswers);
+    const patternValid = validatePattern(userAnswers);
     
     if (allValidated && patternValid && !gameComplete) {
       setGameComplete(true);
