@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { HelpCircle } from 'lucide-react';
@@ -23,17 +23,54 @@ const GameGrid = () => {
   const [validatedAnswers, setValidatedAnswers] = useState<boolean[]>(Array(5).fill(false));
   const [gameComplete, setGameComplete] = useState(false);
   const [focusedCell, setFocusedCell] = useState<{wordIndex: number, letterIndex: number} | null>(null);
-  const [hintsUsed, setHintsUsed] = useState<number[]>(Array(5).fill(0));
+  const [totalHintsUsed, setTotalHintsUsed] = useState(0);
+  const [hintsUsedPerWord, setHintsUsedPerWord] = useState<number[]>(Array(5).fill(0));
+  const inputRefs = useRef<(HTMLInputElement | null)[][]>(
+    Array(5).fill(null).map(() => Array(9).fill(null))
+  );
 
-  // Auto-validate answers when user completes a word
+  // Create audio elements
+  const wordSolvedChime = useRef<HTMLAudioElement | null>(null);
+  const puzzleCompleteChime = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Create simple audio chimes using Web Audio API
+    const createChime = (frequencies: number[], duration: number = 0.3) => {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const gainNode = audioContext.createGain();
+      gainNode.connect(audioContext.destination);
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+
+      frequencies.forEach((freq, index) => {
+        const oscillator = audioContext.createOscillator();
+        oscillator.connect(gainNode);
+        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.1);
+        oscillator.start(audioContext.currentTime + index * 0.1);
+        oscillator.stop(audioContext.currentTime + duration + index * 0.1);
+      });
+    };
+
+    // Simple chime for word completion
+    const playWordChime = () => createChime([523, 659, 784]); // C5, E5, G5
+    // Triumphant chime for puzzle completion
+    const playPuzzleChime = () => createChime([523, 659, 784, 1047], 0.6); // C5, E5, G5, C6
+
+    wordSolvedChime.current = { play: playWordChime } as any;
+    puzzleCompleteChime.current = { play: playPuzzleChime } as any;
+  }, []);
+
+  // Auto-validate answers and check for completion
   useEffect(() => {
     const newValidatedAnswers = [...validatedAnswers];
     let hasChanges = false;
+    let newlyValidatedWords: number[] = [];
 
     userAnswers.forEach((answer, index) => {
       if (answer.length === gameWords[index].length && answer === gameWords[index].answer) {
         if (!validatedAnswers[index]) {
           newValidatedAnswers[index] = true;
+          newlyValidatedWords.push(index);
           hasChanges = true;
         }
       } else if (validatedAnswers[index] && answer !== gameWords[index].answer) {
@@ -44,8 +81,30 @@ const GameGrid = () => {
 
     if (hasChanges) {
       setValidatedAnswers(newValidatedAnswers);
+      
+      // Play chime for newly validated words
+      newlyValidatedWords.forEach(() => {
+        if (wordSolvedChime.current) {
+          wordSolvedChime.current.play();
+        }
+      });
     }
-  }, [userAnswers, validatedAnswers]);
+
+    // Check if all answers are validated and puzzle is complete
+    const allValidated = newValidatedAnswers.every(validated => validated);
+    const patternValid = validatePattern(userAnswers);
+    
+    if (allValidated && patternValid && !gameComplete) {
+      setGameComplete(true);
+      if (puzzleCompleteChime.current) {
+        setTimeout(() => puzzleCompleteChime.current?.play(), 200);
+      }
+      toast({
+        title: "Puzzle Solved!",
+        description: "Congratulations! You've completed the Cascade puzzle!",
+      });
+    }
+  }, [userAnswers, validatedAnswers, gameComplete]);
 
   const handleLetterInput = (wordIndex: number, letterIndex: number, value: string) => {
     if (gameComplete) return;
@@ -62,6 +121,10 @@ const GameGrid = () => {
       
       // Auto-focus next cell if letter was entered
       if (value && letterIndex < gameWords[wordIndex].length - 1) {
+        const nextInput = inputRefs.current[wordIndex][letterIndex + 1];
+        if (nextInput) {
+          nextInput.focus();
+        }
         setFocusedCell({wordIndex, letterIndex: letterIndex + 1});
       }
     }
@@ -78,6 +141,10 @@ const GameGrid = () => {
       
       // Focus previous cell on backspace if current cell is empty
       if (letterIndex > 0 && !currentWord[letterIndex]) {
+        const prevInput = inputRefs.current[wordIndex][letterIndex - 1];
+        if (prevInput) {
+          prevInput.focus();
+        }
         setFocusedCell({wordIndex, letterIndex: letterIndex - 1});
       }
     }
@@ -109,9 +176,12 @@ const GameGrid = () => {
     
     if (allCorrect && patternValid) {
       setGameComplete(true);
+      if (puzzleCompleteChime.current) {
+        puzzleCompleteChime.current.play();
+      }
       toast({
-        title: "Congratulations!",
-        description: "You've solved the puzzle perfectly!",
+        title: "Puzzle Solved!",
+        description: "Congratulations! You've completed the Cascade puzzle!",
       });
     } else if (!patternValid) {
       toast({
@@ -128,40 +198,50 @@ const GameGrid = () => {
     }
   };
 
-  const useHint = (wordIndex: number) => {
-    const currentHints = hintsUsed[wordIndex];
-    if (currentHints >= gameWords[wordIndex].length) {
+  const useHint = () => {
+    if (totalHintsUsed >= 3) {
       toast({
         title: "No more hints",
-        description: "All letters for this word have been revealed!",
+        description: "You've used all 3 hints available!",
         variant: "destructive",
       });
       return;
     }
 
-    const newAnswers = [...userAnswers];
-    const currentWord = newAnswers[wordIndex] || '';
-    const correctAnswer = gameWords[wordIndex].answer;
-    const newWord = currentWord.split('');
-    
-    // Find the next empty position to reveal
-    for (let i = 0; i < correctAnswer.length; i++) {
-      if (!newWord[i] || newWord[i] !== correctAnswer[i]) {
-        newWord[i] = correctAnswer[i];
-        break;
+    // Find the first incomplete word that we can give a hint for
+    for (let wordIndex = 0; wordIndex < gameWords.length; wordIndex++) {
+      if (validatedAnswers[wordIndex]) continue; // Skip already solved words
+      
+      const currentWord = userAnswers[wordIndex] || '';
+      const correctAnswer = gameWords[wordIndex].answer;
+      const newWord = currentWord.split('');
+      
+      // Find the next empty position to reveal
+      for (let i = 0; i < correctAnswer.length; i++) {
+        if (!newWord[i] || newWord[i] !== correctAnswer[i]) {
+          newWord[i] = correctAnswer[i];
+          
+          const newAnswers = [...userAnswers];
+          newAnswers[wordIndex] = newWord.join('');
+          setUserAnswers(newAnswers);
+          
+          const newHintsUsedPerWord = [...hintsUsedPerWord];
+          newHintsUsedPerWord[wordIndex] = hintsUsedPerWord[wordIndex] + 1;
+          setHintsUsedPerWord(newHintsUsedPerWord);
+          setTotalHintsUsed(totalHintsUsed + 1);
+
+          toast({
+            title: "Hint used!",
+            description: `Revealed letter for "${gameWords[wordIndex].clue}" (${3 - totalHintsUsed - 1} hints remaining)`,
+          });
+          return;
+        }
       }
     }
-    
-    newAnswers[wordIndex] = newWord.join('');
-    setUserAnswers(newAnswers);
-    
-    const newHintsUsed = [...hintsUsed];
-    newHintsUsed[wordIndex] = currentHints + 1;
-    setHintsUsed(newHintsUsed);
 
     toast({
-      title: "Hint used!",
-      description: `Revealed letter ${currentHints + 1} for "${gameWords[wordIndex].clue}"`,
+      title: "No hints needed",
+      description: "All available positions are already filled!",
     });
   };
 
@@ -170,7 +250,8 @@ const GameGrid = () => {
     setValidatedAnswers(Array(5).fill(false));
     setGameComplete(false);
     setFocusedCell(null);
-    setHintsUsed(Array(5).fill(0));
+    setTotalHintsUsed(0);
+    setHintsUsedPerWord(Array(5).fill(0));
   };
 
   const renderLetterBoxes = (wordIndex: number) => {
@@ -189,6 +270,11 @@ const GameGrid = () => {
       boxes.push(
         <input
           key={i}
+          ref={(el) => {
+            if (inputRefs.current[wordIndex]) {
+              inputRefs.current[wordIndex][i] = el;
+            }
+          }}
           type="text"
           value={letter}
           onChange={(e) => handleLetterInput(wordIndex, i, e.target.value)}
@@ -231,22 +317,21 @@ const GameGrid = () => {
             <div className="flex gap-1 flex-1">
               {renderLetterBoxes(index)}
             </div>
-
-            <Button
-              onClick={() => useHint(index)}
-              variant="outline"
-              size="sm"
-              className="ml-2"
-              disabled={gameComplete || hintsUsed[index] >= word.length}
-            >
-              <HelpCircle className="w-4 h-4 mr-1" />
-              Hint ({hintsUsed[index]}/{word.length})
-            </Button>
           </div>
         ))}
       </div>
 
       <div className="flex justify-center gap-4 mt-8">
+        <Button
+          onClick={useHint}
+          variant="outline"
+          disabled={gameComplete || totalHintsUsed >= 3}
+          className="px-6 py-2"
+        >
+          <HelpCircle className="w-4 h-4 mr-1" />
+          Hint ({totalHintsUsed}/3)
+        </Button>
+        
         <Button 
           onClick={checkAnswers} 
           disabled={gameComplete || userAnswers.some(answer => !answer)}
@@ -281,7 +366,7 @@ const GameGrid = () => {
           <li>• The first answer can start with any letter</li>
           <li>• The second must start with the same first letter</li>
           <li>• The third must start with the same first two letters, and so on</li>
-          <li>• Use hints if you're stuck - they reveal one letter at a time</li>
+          <li>• Use hints wisely - you only get 3 for the entire puzzle!</li>
         </ul>
       </div>
     </div>
