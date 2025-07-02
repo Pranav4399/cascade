@@ -3,15 +3,18 @@ import { createAudioChimes } from '@/utils/audio';
 import { useEffect, useState } from 'react';
 
 interface GameSaveData {
-  userAnswers: string[];
+  userAnswers: string[][] | string[]; // Support both old and new format
   validatedAnswers: boolean[];
   gameComplete: boolean;
   startTime: number;
   completionTime?: number;
+  version?: number; // Add version for migration
 }
 
-export const useGameState = (gameWords: WordData[], gameId: string, onGameComplete?: () => void) => {
-  const [userAnswers, setUserAnswers] = useState<string[]>(Array(gameWords.length).fill(''));
+export const useGameState = (gameWords: WordData[], gameId: string, onGameComplete?: () => void, onWordValidated?: (wordIndex: number) => void) => {
+  const [userAnswers, setUserAnswers] = useState<string[][]>(
+    () => gameWords.map(word => Array(word.length).fill(''))
+  );
   const [validatedAnswers, setValidatedAnswers] = useState<boolean[]>(Array(gameWords.length).fill(false));
   const [gameComplete, setGameComplete] = useState(false);
   const [focusedCell, setFocusedCell] = useState<FocusedCell | null>(null);
@@ -39,7 +42,26 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
     if (savedData) {
       try {
         const gameData: GameSaveData = JSON.parse(savedData);
-        setUserAnswers(gameData.userAnswers);
+        
+        // Migration: Convert old string[] format to string[][]
+        let migratedUserAnswers: string[][];
+        if (gameData.version === undefined && Array.isArray(gameData.userAnswers) && 
+            gameData.userAnswers.length > 0 && typeof gameData.userAnswers[0] === 'string') {
+          // Old format: string[]
+          migratedUserAnswers = (gameData.userAnswers as string[]).map((answer, index) => {
+            const wordLength = gameWords[index].length;
+            const letterArray = Array(wordLength).fill('');
+            for (let i = 0; i < Math.min(answer.length, wordLength); i++) {
+              letterArray[i] = answer[i];
+            }
+            return letterArray;
+          });
+        } else {
+          // New format: string[][]
+          migratedUserAnswers = gameData.userAnswers as string[][];
+        }
+        
+        setUserAnswers(migratedUserAnswers);
         setValidatedAnswers(gameData.validatedAnswers);
         setGameComplete(gameData.gameComplete);
         setStartTime(gameData.startTime);
@@ -48,7 +70,7 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
         console.warn('Failed to load saved game data:', error);
       }
     }
-  }, [storageKey]);
+  }, [storageKey, gameWords]);
 
   // Save game state whenever it changes
   useEffect(() => {
@@ -58,6 +80,7 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
       gameComplete,
       startTime,
       completionTime: completionTime || undefined,
+      version: 1, // Mark as new format
     };
     localStorage.setItem(storageKey, JSON.stringify(gameData));
   }, [userAnswers, validatedAnswers, gameComplete, startTime, completionTime, storageKey]);
@@ -68,7 +91,8 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
     let hasChanges = false;
     let newlyValidatedWords: number[] = [];
 
-    userAnswers.forEach((answer, index) => {
+    userAnswers.forEach((answerArray, index) => {
+      const answer = answerArray.join('');
       if (answer.length === gameWords[index].length && answer === gameWords[index].answer) {
         if (!validatedAnswers[index]) {
           newValidatedAnswers[index] = true;
@@ -76,6 +100,8 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
           hasChanges = true;
           // Trigger auto-fill when a word is completed
           autoFillPrefixes(index, answer);
+          // Trigger callback for focus management
+          onWordValidated?.(index);
         }
       } else if (validatedAnswers[index] && answer !== gameWords[index].answer) {
         newValidatedAnswers[index] = false;
@@ -106,13 +132,14 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
         onGameComplete?.();
       }, 200);
     }
-  }, [userAnswers, validatedAnswers, gameComplete, gameWords, audioChimes, onGameComplete]);
+  }, [userAnswers, validatedAnswers, gameComplete, gameWords, audioChimes, onGameComplete, onWordValidated, startTime]);
 
-  const validatePattern = (answers: string[]): boolean => {
+  const validatePattern = (answers: string[][]): boolean => {
     for (let i = 1; i < answers.length; i++) {
-      if (!answers[i]) continue;
-      const prevAnswer = answers[i - 1];
-      const currentAnswer = answers[i];
+      const currentAnswer = answers[i].join('');
+      if (!currentAnswer) continue;
+      
+      const prevAnswer = answers[i - 1].join('');
       
       if (prevAnswer && currentAnswer) {
         const requiredPrefix = prevAnswer.substring(0, i);
@@ -126,7 +153,7 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
 
   // Auto-fill functionality: when a word is completed, fill matching prefixes in other words
   const autoFillPrefixes = (completedWordIndex: number, completedWord: string) => {
-    const newAnswers = [...userAnswers];
+    const newAnswers = userAnswers.map(wordArray => [...wordArray]);
     let hasChanges = false;
 
     // For each other word, check if it should be auto-filled
@@ -139,25 +166,26 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
       
       // Only auto-fill if the word starts with the required prefix in the correct answer
       if (word.answer.startsWith(requiredPrefix)) {
-        const currentAnswer = newAnswers[wordIndex] || '';
+        const currentAnswer = newAnswers[wordIndex].join('');
         
         // Auto-fill the prefix if it's not already there or if it's wrong
         if (!currentAnswer.startsWith(requiredPrefix)) {
-          // Preserve any correct letters beyond the prefix
-          const existingPart = currentAnswer.substring(sharedPrefixLength);
-          const correctPart = word.answer.substring(sharedPrefixLength);
+          // Fill the required prefix letters
+          for (let i = 0; i < sharedPrefixLength; i++) {
+            newAnswers[wordIndex][i] = requiredPrefix[i];
+          }
           
-          // Only keep existing letters if they match the correct answer
-          let preservedPart = '';
-          for (let i = 0; i < Math.min(existingPart.length, correctPart.length); i++) {
-            if (existingPart[i] === correctPart[i]) {
-              preservedPart += existingPart[i];
-            } else {
-              break;
+          // Preserve any correct letters beyond the prefix
+          for (let i = sharedPrefixLength; i < word.length; i++) {
+            const existingLetter = newAnswers[wordIndex][i];
+            const correctLetter = word.answer[i];
+            
+            // Only keep existing letter if it matches the correct answer
+            if (existingLetter !== correctLetter) {
+              newAnswers[wordIndex][i] = '';
             }
           }
           
-          newAnswers[wordIndex] = requiredPrefix + preservedPart;
           hasChanges = true;
         }
       }
@@ -170,7 +198,7 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
 
   const resetGame = () => {
     const newStartTime = Date.now();
-    setUserAnswers(Array(gameWords.length).fill(''));
+    setUserAnswers(gameWords.map(word => Array(word.length).fill('')));
     setValidatedAnswers(Array(gameWords.length).fill(false));
     setGameComplete(false);
     setFocusedCell(null);
@@ -203,10 +231,8 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
     focusedCell,
     setFocusedCell,
     resetGame,
-    validatePattern,
     completionTime,
     formatTime,
-    currentTime,
     getCurrentElapsedTime,
   };
 }; 

@@ -3,7 +3,7 @@ import { currentGameData, gameWords } from '@/data/gameWords';
 import { useFirstVisit } from '@/hooks/useFirstVisit';
 import { useGameState } from '@/hooks/useGameState';
 import { useInputHandling } from '@/hooks/useInputHandling';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
 import CongratsModal from './CongratsModal';
 import HowToPlayModal from './HowToPlayModal';
@@ -21,11 +21,17 @@ const GameGrid = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showCongratsModal, setShowCongratsModal] = useState(false);
 
+  const inputHandling = useInputHandling(gameWords);
+  
+  // Create a ref to store the focus function to avoid circular dependency
+  const focusNextWordRef = useRef<((wordIndex: number) => void) | null>(null);
+
   const gameState = useGameState(gameWords, currentGameData.id.toString(), () => {
     setShowCongratsModal(true);
+  }, (wordIndex: number) => {
+    // Auto-focus to next word when current word is validated
+    focusNextWordRef.current?.(wordIndex);
   });
-  
-  const inputHandling = useInputHandling(gameWords);
 
   const {
     userAnswers,
@@ -39,7 +45,15 @@ const GameGrid = () => {
     getCurrentElapsedTime,
   } = gameState;
 
-  const { inputRefs, handleLetterInput, handleKeyDown } = inputHandling;
+  const { inputRefs, handleLetterInput, handleKeyDown, focusNextWord } = inputHandling;
+
+  // Set up the focus function ref with useCallback to avoid recreating on every render
+  const handleWordValidated = useCallback((wordIndex: number) => {
+    focusNextWord(wordIndex, validatedAnswers, setFocusedCell, userAnswers);
+  }, [focusNextWord, validatedAnswers, setFocusedCell, userAnswers]);
+
+  // Update the ref when the callback changes
+  focusNextWordRef.current = handleWordValidated;
 
   // Auto-focus on first input when page loads
   useEffect(() => {
@@ -72,7 +86,8 @@ const GameGrid = () => {
       letterIndex,
       userAnswers,
       setUserAnswers,
-      setFocusedCell
+      setFocusedCell,
+      gameComplete
     );
   };
 
@@ -150,7 +165,7 @@ const GameGrid = () => {
                   key={index}
                   word={word}
                   wordIndex={index}
-                  userAnswer={userAnswers[index] || ''}
+                  userAnswerLetters={userAnswers[index] || Array(word.length).fill('')}
                   isValidated={validatedAnswers[index]}
                   focusedCell={focusedCell}
                   gameComplete={gameComplete}

@@ -18,7 +18,7 @@ export interface GameData {
 export type GameDataArray = GameData[];
 
 export interface GameState {
-  userAnswers: string[];
+  userAnswers: string[][];
   validatedAnswers: boolean[];
   gameComplete: boolean;
   focusedCell: FocusedCell | null;
