@@ -74,10 +74,10 @@ const LetterInput: React.FC<LetterInputProps> = ({
       className={`
         ${getDynamicSizeClasses()} border-2 flex items-center justify-center 
         font-bold ${getDynamicTextSize()} text-center uppercase
-        ${isHighlighted ? 'bg-yellow-400 border-yellow-500 text-gray-900' : 
-          isCorrect ? 'bg-green-500 border-green-600 text-white' : 
-          'bg-white border-gray-300 text-gray-900'}
-        ${isFocused ? 'ring-2 ring-blue-500 border-blue-500' : ''}
+        ${isHighlighted ? 'game-letter-highlighted' : 
+          isCorrect ? 'game-letter-validated' : 
+          'game-letter-input'}
+        ${isFocused ? 'ring-2 ring-blue-500 border-blue-500 dark:ring-blue-400 dark:border-blue-400' : ''}
         transition-all duration-200 focus:outline-none caret-transparent
         ${!isValidated && !isHighlighted && 'hover:border-gray-400 hover:shadow-sm'}
         disabled:opacity-50 disabled:cursor-not-allowed

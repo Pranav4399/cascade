@@ -20,5 +20,8 @@ const getCurrentGameData = (): GameData => {
   return todaysGame || gameData[0];
 };
 
+// Export the current game data
+export const currentGameData: GameData = getCurrentGameData();
+
 // Export just the words array for backward compatibility
-export const gameWords: WordData[] = getCurrentGameData().words; 
+export const gameWords: WordData[] = currentGameData.words; 

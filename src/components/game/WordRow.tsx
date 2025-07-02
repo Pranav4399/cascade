@@ -81,7 +81,7 @@ const WordRow: React.FC<WordRowProps> = ({
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-      <div className="w-full sm:w-32 text-center sm:text-right font-semibold text-gray-700 flex-shrink-0 text-sm sm:text-base">
+      <div className="w-full sm:w-32 text-center sm:text-right font-semibold game-text-primary flex-shrink-0 text-sm sm:text-base">
         {word.clue}
       </div>
       
