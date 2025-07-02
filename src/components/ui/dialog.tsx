@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 // Simple X icon SVG to replace lucide-react
@@ -42,9 +42,23 @@ interface DialogDescriptionProps {
 }
 
 const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
-  const dialogRef = useRef<HTMLDivElement>(null);
+  const [isDark, setIsDark] = React.useState(false);
 
   useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+
+    // Check initially
+    checkDarkMode();
+
+    // Watch for changes
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onOpenChange(false);
@@ -57,6 +71,7 @@ const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
     }
 
     return () => {
+      observer.disconnect();
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
@@ -65,7 +80,7 @@ const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50">
+    <div className={`fixed inset-0 z-50 ${isDark ? 'dark' : ''}`}>
       {/* Overlay */}
       <div 
         className="fixed inset-0 bg-black/80"
@@ -83,7 +98,7 @@ const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
 const DialogContent: React.FC<DialogContentProps> = ({ className = '', children }) => {
   return (
     <div
-      className={`z-50 grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg ${className}`.trim()}
+      className={`z-50 grid w-full max-w-lg gap-4 game-dialog-background p-6 shadow-lg duration-200 sm:rounded-lg ${className}`.trim()}
       onClick={(e) => e.stopPropagation()}
     >
       {children}
@@ -117,7 +132,7 @@ const DialogDescription: React.FC<DialogDescriptionProps> = ({
   }
   
   return (
-    <p className={`text-sm text-muted-foreground ${className}`.trim()}>
+    <p className={`text-sm text-gray-600 dark:text-gray-400 ${className}`.trim()}>
       {children}
     </p>
   );
@@ -128,7 +143,7 @@ const DialogClose: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
     <button
       onClick={onClose}
-      className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+      className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 disabled:pointer-events-none game-dialog-close"
     >
       <XIcon className="h-4 w-4" />
       <span className="sr-only">Close</span>

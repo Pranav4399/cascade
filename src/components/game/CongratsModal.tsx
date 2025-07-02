@@ -26,49 +26,58 @@ interface CongratsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onShare: () => void;
+  completionTime?: number | null;
+  formatTime?: (milliseconds: number) => string;
 }
 
 const CongratsModal: React.FC<CongratsModalProps> = ({ 
   isOpen, 
   onClose, 
-  onShare 
+  onShare,
+  completionTime,
+  formatTime
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md sm:max-w-lg mx-auto border-2 border-gray-200">
+      <DialogContent className="max-w-md sm:max-w-lg mx-auto">
         <DialogClose onClose={onClose} />
         <DialogHeader>
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 sm:w-18 sm:h-18 bg-gray-100 border-2 border-gray-300 flex items-center justify-center">
-              <TrophyIcon className="w-8 h-8 sm:w-9 sm:h-9 text-gray-700" />
+            <div className="w-16 h-16 sm:w-18 sm:h-18 game-trophy-background border-2 flex items-center justify-center">
+              <TrophyIcon className="w-8 h-8 sm:w-9 sm:h-9 game-text-primary" />
             </div>
           </div>
-          <DialogTitle className="text-xl sm:text-2xl font-bold text-gray-800 text-center mb-2">
+          <DialogTitle className="text-xl sm:text-2xl font-bold game-text-primary text-center mb-2">
             The cascade pattern is complete
           </DialogTitle>
           <DialogDescription asChild>
             <div className="text-center space-y-6 px-4">
               <div className="space-y-2">
-                <p className="text-base sm:text-lg text-gray-700 font-medium">
+                <p className="text-base sm:text-lg game-text-primary font-medium">
                   Excellent work! You found all the synonyms.
                 </p>
+                {completionTime && formatTime && (
+                  <p className="text-lg sm:text-xl font-bold game-text-primary">
+                    Time: {formatTime(completionTime)}
+                  </p>
+                )}
               </div>
               
               <div className="space-y-3 pt-2">
                 <Button
                   onClick={onShare}
-                  className="w-full flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 font-medium border-2 border-gray-800 hover:border-gray-900 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 game-share-button px-6 py-3 font-medium border-2 transition-colors"
                 >
                   <Share2Icon className="w-4 h-4" />
                   Share Results
                 </Button>
               </div>
               
-              <div className="pt-2 border-t border-gray-200">
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-600">
                 <Button
                   onClick={onClose}
                   variant="ghost"
-                  className="text-gray-500 hover:text-gray-700 text-sm font-normal"
+                  className="game-text-muted text-sm font-normal"
                 >
                   Close
                 </Button>

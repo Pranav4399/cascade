@@ -5,7 +5,7 @@ import LetterInput from './LetterInput';
 interface WordRowProps {
   word: WordData;
   wordIndex: number;
-  userAnswer: string;
+  userAnswerLetters: string[];
   isValidated: boolean;
   focusedCell: FocusedCell | null;
   gameComplete: boolean;
@@ -19,7 +19,7 @@ interface WordRowProps {
 const WordRow: React.FC<WordRowProps> = ({
   word,
   wordIndex,
-  userAnswer,
+  userAnswerLetters,
   isValidated,
   focusedCell,
   gameComplete,
@@ -47,7 +47,7 @@ const WordRow: React.FC<WordRowProps> = ({
     const boxes = [];
     
     for (let i = 0; i < word.length; i++) {
-      const letter = userAnswer[i] || '';
+      const letter = userAnswerLetters[i] || '';
       // Yellow highlight: first box of first row, first two of second row, etc.
       const isHighlighted = i < wordIndex + 1;
       const isFocused = focusedCell?.wordIndex === wordIndex && focusedCell?.letterIndex === i;
@@ -81,7 +81,7 @@ const WordRow: React.FC<WordRowProps> = ({
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-      <div className="w-full sm:w-32 text-center sm:text-right font-semibold text-gray-700 flex-shrink-0 text-sm sm:text-base">
+      <div className="w-full sm:w-32 text-center sm:text-right font-semibold game-text-primary flex-shrink-0 text-sm sm:text-base">
         {word.clue}
       </div>
       

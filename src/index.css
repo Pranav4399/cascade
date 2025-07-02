@@ -4,38 +4,162 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Game-specific variables */
+    --game-background: 255 255 255;
+    --game-header-background: 255 255 255;
+    --game-border: 229 231 235;
+  }
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+  .dark {
+    /* Game-specific dark variables */
+    --game-background: 17 24 39;
+    --game-header-background: 17 24 39;
+    --game-border: 75 85 99;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-gray-200;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-gray-900 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+
+  /* Game-specific styles */
+  .game-background {
+    background-color: rgb(var(--game-background));
+  }
+
+  .game-header {
+    background-color: rgb(var(--game-header-background));
+    border-color: rgb(var(--game-border));
+  }
+
+  .game-text-primary {
+    color: #374151; /* gray-700 */
+  }
+
+  .dark .game-text-primary {
+    color: #f8f8f8; /* custom off-white */
+  }
+
+  .game-text-secondary {
+    color: #4b5563; /* gray-600 */
+  }
+
+  .dark .game-text-secondary {
+    color: #f8f8f8; /* custom off-white */
+  }
+
+  .game-text-muted {
+    color: #6b7280; /* gray-500 */
+  }
+
+  .dark .game-text-muted {
+    color: #e5e5e5; /* slightly dimmer off-white */
+  }
+
+  .game-dialog-background {
+    background-color: white;
+    border-color: #d1d5db; /* gray-300 */
+  }
+
+  .dark .game-dialog-background {
+    background-color: #1f2937; /* gray-800 */
+    border-color: #374151; /* gray-700 */
+  }
+
+  .game-dialog-close {
+    color: #6b7280; /* gray-500 */
+  }
+
+  .game-dialog-close:hover {
+    color: #374151; /* gray-700 */
+  }
+
+  .dark .game-dialog-close {
+    color: #9ca3af; /* gray-400 */
+  }
+
+  .dark .game-dialog-close:hover {
+    color: #f8f8f8; /* custom off-white */
+  }
+
+  .game-trophy-background {
+    background-color: #f3f4f6; /* gray-100 */
+    border-color: #d1d5db; /* gray-300 */
+  }
+
+  .dark .game-trophy-background {
+    background-color: #374151; /* gray-700 */
+    border-color: #4b5563; /* gray-600 */
+  }
+
+  .game-share-button {
+    background-color: #1f2937; /* gray-800 */
+    border-color: #1f2937; /* gray-800 */
+    color: white;
+  }
+
+  .game-share-button:hover {
+    background-color: #111827; /* gray-900 */
+    border-color: #111827; /* gray-900 */
+  }
+
+  .dark .game-share-button {
+    background-color: #374151; /* gray-700 */
+    border-color: #374151; /* gray-700 */
+  }
+
+  .dark .game-share-button:hover {
+    background-color: #4b5563; /* gray-600 */
+    border-color: #4b5563; /* gray-600 */
+  }
+
+  .game-letter-input {
+    @apply bg-white border-gray-300 text-gray-900;
+  }
+
+  .game-letter-input:hover {
+    @apply hover:border-gray-400 hover:shadow-sm;
+  }
+
+  .game-letter-validated {
+    @apply bg-green-500 border-green-600 text-white;
+  }
+
+  .game-letter-highlighted {
+    @apply bg-yellow-400 border-yellow-500 text-gray-900;
+  }
+
+  /* Game-specific dark mode styles */
+  .dark .game-header {
+    @apply bg-gray-900 border-gray-700;
+  }
+
+  .dark .game-letter-input {
+    @apply bg-gray-800 border-gray-600 text-gray-100;
+  }
+
+  .dark .game-letter-input:hover {
+    @apply border-gray-500;
+  }
+
+  .dark .game-letter-input:focus {
+    @apply border-blue-400 ring-blue-400;
+  }
+
+  .dark .game-letter-validated {
+    @apply bg-green-600 border-green-500 text-white;
+  }
+
+  .dark .game-letter-highlighted {
+    @apply bg-yellow-500 border-yellow-400 text-gray-900;
   }
 }
