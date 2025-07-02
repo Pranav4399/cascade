@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "date": "2025-07-02",
+    "words": [
+      { "clue": "ARGUE", "answer": "BICKER", "length": 6 },
+      { "clue": "CONFUSE", "answer": "BAMBOOZLE", "length": 9 },
+      { "clue": "UNCIVILISED", "answer": "BARBARIC", "length": 8 },
+      { "clue": "ADVOCATE", "answer": "BARRISTER", "length": 9 },
+      { "clue": "BULWARK", "answer": "BARRICADE", "length": 9 }
+    ]
+  },
+  {
+    "id": 2,
+    "date": "2025-07-03",
+    "words": [
+      { "clue": "COLD", "answer": "CHILLY", "length": 6 },
+      { "clue": "RELAXED", "answer": "CHILLOUT", "length": 8 },
+      { "clue": "YOUNGSTER", "answer": "CHILD", "length": 5 },
+      { "clue": "PEPPER", "answer": "CHILI", "length": 5 },
+      { "clue": "BACKBONE", "answer": "SPINE", "length": 5 }
+    ]
+  },
+  {
+    "id": 3,
+    "date": "2025-07-04",
+    "words": [
+      { "clue": "QUICK", "answer": "FAST", "length": 4 },
+      { "clue": "ABSTAIN", "answer": "FAST", "length": 4 },
+      { "clue": "DESTINY", "answer": "FATE", "length": 4 },
+      { "clue": "PLUMP", "answer": "FAT", "length": 3 },
+      { "clue": "PAPA", "answer": "FATHER", "length": 6 }
+    ]
+  },
+  {
+    "id": 4,
+    "date": "2025-07-05",
+    "words": [
+      { "clue": "MELODY", "answer": "SONG", "length": 4 },
+      { "clue": "OFFSPRING", "answer": "SON", "length": 3 },
+      { "clue": "SHORTLY", "answer": "SOON", "length": 4 },
+      { "clue": "ACHING", "answer": "SORE", "length": 4 },
+      { "clue": "ASCEND", "answer": "SOAR", "length": 4 }
+    ]
+  },
+  {
+    "id": 5,
+    "date": "2025-07-06",
+    "words": [
+      { "clue": "LARGE", "answer": "GREAT", "length": 5 },
+      { "clue": "WELCOME", "answer": "GREET", "length": 5 },
+      { "clue": "VERDANT", "answer": "GREEN", "length": 5 },
+      { "clue": "MONEY", "answer": "GREEN", "length": 5 },
+      { "clue": "CUPIDITY", "answer": "GREED", "length": 5 }
+    ]
+  },
+  {
+    "id": 6,
+    "date": "2025-07-07",
+    "words": [
+      { "clue": "DEPART", "answer": "LEAVE", "length": 5 },
+      { "clue": "FOLIAGE", "answer": "LEAVES", "length": 6 },
+      { "clue": "BORROW", "answer": "LEASE", "length": 5 },
+      { "clue": "MINIMAL", "answer": "LEAST", "length": 5 },
+      { "clue": "DISCOVER", "answer": "LEARN", "length": 5 }
+    ]
+  }
+] 

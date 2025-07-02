@@ -1,73 +1,69 @@
-# Welcome to your Lovable project
+# Cascade - Word Chain Puzzle Game
 
-## Project info
+A modern word puzzle game where you find synonyms that follow a cascade pattern. Each word must share progressively more starting letters with the next word in the chain.
 
-**URL**: https://lovable.dev/projects/a98e9d4a-ef25-4382-adc4-6fd63e5dc015
+## 🎯 How to Play
 
-## How can I edit this code?
+1. **Find synonyms** for each clue word
+2. **Follow the pattern**: Each answer must start with the same letters as the previous answer
+3. **Build the cascade**: First word can start with any letter, second must share the first letter, third must share the first two letters, and so on
 
-There are several ways of editing your application.
+**Example**: BICKER → BAMBOOZLE → BARBARIC (B → BA → BAR...)
 
-**Use Lovable**
+## 🚀 Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a98e9d4a-ef25-4382-adc4-6fd63e5dc015) and start prompting.
+### Prerequisites
+- Node.js 18+ and npm
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation
 
-**Use your preferred IDE**
+```bash
+# Clone the repository
+git clone <repository-url>
+cd synonyzzle-word-chain
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# Install dependencies
+npm install
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Build for Production
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Create production build
+npm run build
 
-**Use GitHub Codespaces**
+# Preview production build
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🛠️ Tech Stack
 
-## What technologies are used for this project?
+- **React 18** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Styling
+- **Native components** - Lightweight UI (no external component libraries)
 
-This project is built with:
+## 📱 Features
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Responsive design** - Works on desktop and mobile
+- **Dynamic sizing** - Adaptive letter boxes for different word lengths
+- **Auto-validation** - Real-time checking as you type
+- **Focus management** - Smooth navigation between input boxes
+- **Share results** - Share your completed puzzles
+- **How-to-play modal** - Built-in instructions for new players
 
-## How can I deploy this project?
+## 🎨 Game Design
 
-Simply open [Lovable](https://lovable.dev/projects/a98e9d4a-ef25-4382-adc4-6fd63e5dc015) and click on Share -> Publish.
+- Clean, minimalist interface
+- Yellow highlighting for cascade pattern visualization
+- Green validation for correct answers
+- Smooth animations and transitions
+- Mobile-optimized input handling
 
-## Can I connect a custom domain to my Lovable project?
+## 📄 License
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This project is open source and available under the MIT License.
