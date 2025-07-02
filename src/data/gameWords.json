@@ -3,22 +3,22 @@
     "id": 1,
     "date": "2025-07-02",
     "words": [
-      { "clue": "ARGUE", "answer": "BICKER", "length": 6 },
-      { "clue": "CONFUSE", "answer": "BAMBOOZLE", "length": 9 },
-      { "clue": "UNCIVILISED", "answer": "BARBARIC", "length": 8 },
-      { "clue": "ADVOCATE", "answer": "BARRISTER", "length": 9 },
-      { "clue": "BULWARK", "answer": "BARRICADE", "length": 9 }
+      { "clue": "WEAPONRY", "answer": "ARSENAL", "length": 7 },
+      { "clue": "PARALLEL", "answer": "ANALOGY", "length": 7 },
+      { "clue": "OPPOSITE", "answer": "ANTONYM", "length": 7 },
+      { "clue": "RECEIVER", "answer": "ANTENNA", "length": 7 },
+      { "clue": "A DEER", "answer": "ANTELOPE", "length": 8 }
     ]
   },
   {
     "id": 2,
     "date": "2025-07-03",
     "words": [
-      { "clue": "COLD", "answer": "CHILLY", "length": 6 },
-      { "clue": "RELAXED", "answer": "CHILLOUT", "length": 8 },
-      { "clue": "YOUNGSTER", "answer": "CHILD", "length": 5 },
-      { "clue": "PEPPER", "answer": "CHILI", "length": 5 },
-      { "clue": "BACKBONE", "answer": "SPINE", "length": 5 }
+      { "clue": "BORING", "answer": "BANAL", "length": 5 },
+      { "clue": "A SPIRIT", "answer": "BRANDY", "length": 6 },
+      { "clue": "A CHICKEN", "answer": "BROILER", "length": 7 },
+      { "clue": "BORE", "answer": "BROMIDE", "length": 7 },
+      { "clue": "FRATERNALISM", "answer": "BROMANCE", "length": 8 }
     ]
   },
   {
