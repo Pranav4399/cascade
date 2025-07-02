@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
-  base: '/cascade-word-chain/',
+  base: '/cascade/',
   server: {
     host: "::",
     port: 8080,
