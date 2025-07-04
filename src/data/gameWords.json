@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "date": 2025-07-04,
+    "date": "2025-07-04",
     "words": [
       { "clue": "GUNS/GUNNERS", "answer": "ARSENAL", "length":7 }, 
       { "clue": "PARALLEL", "answer": "ANALOGY", "length":7 }, 
@@ -12,7 +12,7 @@
   },
   {
     "id": 2,
-    "date": 2025-07-05,
+    "date": "2025-07-05",
     "words": [
       { "clue": "BORING", "answer": "BANAL", "length":5 }, 
       { "clue": "A LIQUOR", "answer": "BRANDY", "length":6 }, 
@@ -23,7 +23,7 @@
   },
   {
     "id": 3,
-    "date": 2025-07-06,
+    "date": "2025-07-06",
     "words": [
       { "clue": "FLITWICK'S CLASS", "answer": "CHARMS", "length":6 }, 
       { "clue": "ALADDIN'S RIDE", "answer": "CARPET", "length":6 }, 
@@ -34,7 +34,7 @@
   },
   {
     "id": 4,
-    "date": 2025-07-07,
+    "date": "2025-07-07",
     "words": [
       { "clue": "SWEETHEART", "answer": "DARLING", "length":7 }, 
       { "clue": "FATAL", "answer": "DEADLY", "length":6 }, 
@@ -45,7 +45,7 @@
   },
   {
     "id": 5,
-    "date": 2025-07-08,
+    "date": "2025-07-08",
     "words": [
       { "clue": "PUZZLE", "answer": "ENIGMA", "length":6 }, 
       { "clue": "TIMELESS", "answer": "EVERGREEN", "length":9 }, 
@@ -56,7 +56,7 @@
   },
   {
     "id": 6,
-    "date": 2025-07-09,
+    "date": "2025-07-09",
     "words": [
       { "clue": "STRIKER", "answer": "FORWARD", "length":7 }, 
       { "clue": "AIRPLANES", "answer": "FLIGHTS", "length":7 }, 
@@ -67,7 +67,7 @@
   },
   {
     "id": 7,
-    "date": 2025-07-10,
+    "date": "2025-07-10",
     "words": [
       { "clue": "10^100", "answer": "GOOGOL", "length":6 }, 
       { "clue": "HUSTLER", "answer": "GRINDER", "length":7 }, 
