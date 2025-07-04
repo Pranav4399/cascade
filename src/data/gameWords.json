@@ -1,68 +1,79 @@
 [
   {
     "id": 1,
-    "date": "2025-07-02",
+    "date": 2025-07-04,
     "words": [
-      { "clue": "WEAPONRY", "answer": "ARSENAL", "length": 7 },
-      { "clue": "PARALLEL", "answer": "ANALOGY", "length": 7 },
-      { "clue": "OPPOSITE", "answer": "ANTONYM", "length": 7 },
-      { "clue": "RECEIVER", "answer": "ANTENNA", "length": 7 },
-      { "clue": "A DEER", "answer": "ANTELOPE", "length": 8 }
+      { "clue": "GUNS/GUNNERS", "answer": "ARSENAL", "length":7 }, 
+      { "clue": "PARALLEL", "answer": "ANALOGY", "length":7 }, 
+      { "clue": "OPPOSITE", "answer": "ANTONYM", "length":7 }, 
+      { "clue": "COCKROACH HORNS", "answer": "ANTENNA", "length":7 }, 
+      { "clue": "A DEER THAT RUNS AWAY", "answer": "ANTELOPE", "length":8 }
     ]
   },
   {
     "id": 2,
-    "date": "2025-07-03",
+    "date": 2025-07-05,
     "words": [
-      { "clue": "BORING", "answer": "BANAL", "length": 5 },
-      { "clue": "A SPIRIT", "answer": "BRANDY", "length": 6 },
-      { "clue": "A CHICKEN", "answer": "BROILER", "length": 7 },
-      { "clue": "BORE", "answer": "BROMIDE", "length": 7 },
-      { "clue": "FRATERNALISM", "answer": "BROMANCE", "length": 8 }
+      { "clue": "BORING", "answer": "BANAL", "length":5 }, 
+      { "clue": "A LIQUOR", "answer": "BRANDY", "length":6 }, 
+      { "clue": "YOUNG CHICKEN", "answer": "BROILER", "length":7 }, 
+      { "clue": "BORE", "answer": "BROMIDE", "length":7 }, 
+      { "clue": "FRATERNALISM", "answer": "BROMANCE", "length":8 }
     ]
   },
   {
     "id": 3,
-    "date": "2025-07-04",
+    "date": 2025-07-06,
     "words": [
-      { "clue": "QUICK", "answer": "FAST", "length": 4 },
-      { "clue": "ABSTAIN", "answer": "FAST", "length": 4 },
-      { "clue": "DESTINY", "answer": "FATE", "length": 4 },
-      { "clue": "PLUMP", "answer": "FAT", "length": 3 },
-      { "clue": "PAPA", "answer": "FATHER", "length": 6 }
+      { "clue": "FLITWICK'S CLASS", "answer": "CHARMS", "length":6 }, 
+      { "clue": "ALADDIN'S RIDE", "answer": "CARPET", "length":6 }, 
+      { "clue": "DANCE", "answer": "CAVORT", "length":6 }, 
+      { "clue": "GIVING IN", "answer": "CAVING", "length":6 }, 
+      { "clue": "CRITIC", "answer": "CAVILER", "length":7 }
     ]
   },
   {
     "id": 4,
-    "date": "2025-07-05",
+    "date": 2025-07-07,
     "words": [
-      { "clue": "MELODY", "answer": "SONG", "length": 4 },
-      { "clue": "OFFSPRING", "answer": "SON", "length": 3 },
-      { "clue": "SHORTLY", "answer": "SOON", "length": 4 },
-      { "clue": "ACHING", "answer": "SORE", "length": 4 },
-      { "clue": "ASCEND", "answer": "SOAR", "length": 4 }
+      { "clue": "SWEETHEART", "answer": "DARLING", "length":7 }, 
+      { "clue": "FATAL", "answer": "DEADLY", "length":6 }, 
+      { "clue": "TYRANT", "answer": "DESPOT", "length":6 }, 
+      { "clue": "DOOM", "answer": "DESTINE", "length":7 }, 
+      { "clue": "RELAX", "answer": "DESTRESS", "length":8 }
     ]
   },
   {
     "id": 5,
-    "date": "2025-07-06",
+    "date": 2025-07-08,
     "words": [
-      { "clue": "LARGE", "answer": "GREAT", "length": 5 },
-      { "clue": "WELCOME", "answer": "GREET", "length": 5 },
-      { "clue": "VERDANT", "answer": "GREEN", "length": 5 },
-      { "clue": "MONEY", "answer": "GREEN", "length": 5 },
-      { "clue": "CUPIDITY", "answer": "GREED", "length": 5 }
+      { "clue": "PUZZLE", "answer": "ENIGMA", "length":6 }, 
+      { "clue": "TIMELESS", "answer": "EVERGREEN", "length":9 }, 
+      { "clue": "ASSESS", "answer": "EVALUATE", "length":8 }, 
+      { "clue": ""BRING ME TO LIFE" BAND", "answer": "EVANESCENCE", "length":11 }, 
+      { "clue": "MISSIONARY", "answer": "EVANGELIST", "length":10 }
     ]
   },
   {
     "id": 6,
-    "date": "2025-07-07",
+    "date": 2025-07-09,
     "words": [
-      { "clue": "DEPART", "answer": "LEAVE", "length": 5 },
-      { "clue": "FOLIAGE", "answer": "LEAVES", "length": 6 },
-      { "clue": "BORROW", "answer": "LEASE", "length": 5 },
-      { "clue": "MINIMAL", "answer": "LEAST", "length": 5 },
-      { "clue": "DISCOVER", "answer": "LEARN", "length": 5 }
+      { "clue": "STRIKER", "answer": "FORWARD", "length":7 }, 
+      { "clue": "AIRPLANES", "answer": "FLIGHTS", "length":7 }, 
+      { "clue": "OBVIOUS BASKETBALL FOUL", "answer": "FLAGRANT", "length":8 }, 
+      { "clue": "CRITICISED", "answer": "FLAMED", "length":6 }, 
+      { "clue": "SWASHBUCKLING", "answer": "FLAMBOYANT", "length":10 }
+    ]
+  },
+  {
+    "id": 7,
+    "date": 2025-07-10,
+    "words": [
+      { "clue": "10^100", "answer": "GOOGOL", "length":6 }, 
+      { "clue": "HUSTLER", "answer": "GRINDER", "length":7 }, 
+      { "clue": "SEIZING", "answer": "GRABBING", "length":8 }, 
+      { "clue": "PEBBLES AND STONES", "answer": "GRAVEL", "length":6 }, 
+      { "clue": "WHY DO WE FALL?", "answer": "GRAVITY", "length":7 }
     ]
   }
 ] 
