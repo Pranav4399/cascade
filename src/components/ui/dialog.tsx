@@ -41,6 +41,11 @@ interface DialogDescriptionProps {
   asChild?: boolean;
 }
 
+interface DialogFooterProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
 const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
   const [isDark, setIsDark] = React.useState(false);
 
@@ -87,7 +92,7 @@ const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
         onClick={() => onOpenChange(false)}
       />
       {/* Content Container */}
-      <div className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+      <div className="fixed inset-0 flex items-center justify-center p-4">
         {children}
       </div>
     </div>,
@@ -98,7 +103,7 @@ const Dialog: React.FC<DialogProps> = ({ open, onOpenChange, children }) => {
 const DialogContent: React.FC<DialogContentProps> = ({ className = '', children }) => {
   return (
     <div
-      className={`z-50 grid w-full max-w-lg gap-4 game-dialog-background p-6 shadow-lg duration-200 sm:rounded-lg ${className}`.trim()}
+      className={`relative z-50 grid w-full max-w-lg gap-4 game-dialog-background p-6 shadow-lg duration-200 sm:rounded-lg max-h-[90vh] overflow-y-auto ${className}`.trim()}
       onClick={(e) => e.stopPropagation()}
     >
       {children}
@@ -151,8 +156,16 @@ const DialogClose: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   );
 };
 
+const DialogFooter: React.FC<DialogFooterProps> = ({ className = '', children }) => {
+  return (
+    <div className={`flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 ${className}`.trim()}>
+      {children}
+    </div>
+  );
+};
+
 export {
-  Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader,
+  Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle
 };
 

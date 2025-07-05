@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
 } from '@/components/ui/dialog';
 import React from 'react';
 
@@ -28,6 +28,8 @@ interface CongratsModalProps {
   onShare: () => void;
   completionTime?: number | null;
   formatTime?: (milliseconds: number) => string;
+  currentStreak?: number;
+  maxStreak?: number;
 }
 
 const CongratsModal: React.FC<CongratsModalProps> = ({ 
@@ -35,7 +37,9 @@ const CongratsModal: React.FC<CongratsModalProps> = ({
   onClose, 
   onShare,
   completionTime,
-  formatTime
+  formatTime,
+  currentStreak = 0,
+  maxStreak = 0
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -61,6 +65,10 @@ const CongratsModal: React.FC<CongratsModalProps> = ({
                     Time: {formatTime(completionTime)}
                   </p>
                 )}
+                <div className="flex justify-center gap-4 text-sm game-text-secondary pt-2">
+                  <span>Current streak: <strong className="game-text-primary">{currentStreak}</strong></span>
+                  <span>Best streak: <strong className="game-text-primary">{maxStreak}</strong></span>
+                </div>
               </div>
               
               <div className="space-y-3 pt-2">

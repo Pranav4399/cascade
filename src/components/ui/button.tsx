@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'ghost';
+  variant?: 'default' | 'ghost' | 'destructive';
   size?: 'default' | 'sm';
   children: React.ReactNode;
 }
@@ -14,7 +14,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Variant styles
     const variantStyles = {
       default: 'bg-gray-900 text-white hover:bg-gray-800',
-      ghost: 'hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-100'
+      ghost: 'hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-100',
+      destructive: 'bg-red-500 text-white hover:bg-red-600'
     };
     
     // Size styles

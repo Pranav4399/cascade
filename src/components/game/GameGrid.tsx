@@ -1,8 +1,17 @@
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
 import { currentGameData, gameWords } from '@/data/gameWords';
 import { useFirstVisit } from '@/hooks/useFirstVisit';
 import { useGameState } from '@/hooks/useGameState';
 import { useInputHandling } from '@/hooks/useInputHandling';
+import { useStreakCounter } from '@/hooks/useStreakCounter';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
 import CongratsModal from './CongratsModal';
@@ -20,8 +29,10 @@ const GameGrid = () => {
   const { showModal, closeModal } = useFirstVisit();
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showCongratsModal, setShowCongratsModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const inputHandling = useInputHandling(gameWords);
+  const { currentStreak, maxStreak, incrementStreak, resetStreak, hasGameContributedToStreak } = useStreakCounter();
   
   // Create a ref to store the focus function to avoid circular dependency
   const focusNextWordRef = useRef<((wordIndex: number) => void) | null>(null);
@@ -38,14 +49,41 @@ const GameGrid = () => {
     setUserAnswers,
     validatedAnswers,
     gameComplete,
+    gameGivenUp,
+    streakCounted,
+    setGameComplete,
     focusedCell,
     setFocusedCell,
     completionTime,
     formatTime,
     getCurrentElapsedTime,
+    giveUpGame,
+    markStreakCounted,
   } = gameState;
 
   const { inputRefs, handleLetterInput, handleKeyDown, focusNextWord } = inputHandling;
+
+  // Handle streak logic when game completes
+  const streakHandledRef = useRef(false);
+  
+  useEffect(() => {
+    const gameId = currentGameData.id.toString();
+    const hasAlreadyContributed = hasGameContributedToStreak(gameId);
+    
+    if (gameComplete && !streakHandledRef.current && !hasAlreadyContributed) {
+      streakHandledRef.current = true;
+      if (gameGivenUp) {
+        resetStreak(gameId);
+      } else {
+        incrementStreak(gameId);
+      }
+    }
+    
+    // Reset the flag when game is not complete (for new games)
+    if (!gameComplete) {
+      streakHandledRef.current = false;
+    }
+  }, [gameComplete, gameGivenUp, incrementStreak, resetStreak, hasGameContributedToStreak]);
 
   // Set up the focus function ref with useCallback to avoid recreating on every render
   const handleWordValidated = useCallback((wordIndex: number) => {
@@ -102,6 +140,8 @@ const GameGrid = () => {
   const handleShare = async () => {
     const timeText = completionTime ? formatTime(completionTime) : 'Not completed';
     const shareText = `🎯 I just solved today's Cascade puzzle in ${timeText}!\n\n` +
+      `🔥 Current streak: ${currentStreak}\n` +
+      `🏆 Best streak: ${maxStreak}\n\n` +
       `Can you beat my time?\n\n` +
       `Try it yourself!`;
 
@@ -123,27 +163,80 @@ const GameGrid = () => {
     }
   };
 
+  const handleConfirmGiveUp = () => {
+    giveUpGame();
+    setShowConfirmModal(false);
+  };
+
   return (
     <div className="min-h-screen game-background flex flex-col transition-colors duration-300">
       {/* Header */}
       <header className="border-b game-header transition-colors duration-300">
-        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <div className="text-sm sm:text-base font-mono game-text-primary">
-              {formatTime(getCurrentElapsedTime())}
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
+          {/* Mobile Layout */}
+          <div className="sm:hidden">
+            {/* Top Row: Title and Controls */}
+            <div className="flex justify-between items-center mb-2">
+              <h1 className="text-2xl font-bold game-text-primary">
+                Cascade
+              </h1>
+              <div className="flex items-center gap-0.5">
+                <ThemeToggle />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowHelpModal(true)}
+                  className="p-1.5"
+                >
+                  <HelpCircleIcon className="w-5 h-5 game-text-primary" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowConfirmModal(true)}
+                  className="p-1.5 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
+                >
+                  Give up
+                </Button>
+              </div>
+            </div>
+            {/* Bottom Row: Timer Left-aligned */}
+            <div className="text-left">
+              <div className="text-sm font-mono game-text-primary">
+                {formatTime(getCurrentElapsedTime())}
+              </div>
             </div>
           </div>
-          <h1 className="text-2xl sm:text-3xl ml-12 sm:ml-4 font-bold game-text-primary">Cascade</h1>
-          <div className="flex items-center gap-1">
-            <ThemeToggle />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowHelpModal(true)}
-              className="p-1.5 sm:p-2"
-            >
-              <HelpCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 game-text-primary" />
-            </Button>
+
+          {/* Desktop Layout */}
+          <div className="hidden sm:flex justify-between items-center">
+            <div className="flex items-center">
+              <div className="text-base font-mono game-text-primary">
+                {formatTime(getCurrentElapsedTime())}
+              </div>
+            </div>
+            <h1 className="text-3xl font-bold game-text-primary">
+              Cascade
+            </h1>
+            <div className="flex items-center gap-0.5">
+              <ThemeToggle />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowHelpModal(true)}
+                className="p-2"
+              >
+                <HelpCircleIcon className="w-6 h-6 game-text-primary" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowConfirmModal(true)}
+                                 className="p-2 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
+              >
+                Give up
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -165,7 +258,9 @@ const GameGrid = () => {
                   key={index}
                   word={word}
                   wordIndex={index}
-                  userAnswerLetters={userAnswers[index] || Array(word.length).fill('')}
+                  userAnswerLetters={
+                    userAnswers[index] || Array(word.length).fill("")
+                  }
                   isValidated={validatedAnswers[index]}
                   focusedCell={focusedCell}
                   gameComplete={gameComplete}
@@ -181,22 +276,44 @@ const GameGrid = () => {
             {/* Completion Message */}
             {gameComplete && (
               <div className="text-center mb-6 sm:mb-8">
-                <p className="text-lg sm:text-xl font-medium game-text-primary mb-1">
-                  Well done!
-                </p>
-                <p className="text-sm game-text-secondary">
-                  You've completed the cascade pattern
-                </p>
+                {gameGivenUp ? (
+                  <>
+                    <p className="text-lg sm:text-xl font-medium game-text-primary mb-1">
+                      Don't give up!
+                    </p>
+                    <p className="text-sm game-text-secondary mb-2">
+                      You can always try again tomorrow
+                    </p>
+                    <div className="text-xs game-text-secondary">
+                      Current streak: {currentStreak} | Best streak: {maxStreak}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-lg sm:text-xl font-medium game-text-primary mb-1">
+                      Well done!
+                    </p>
+                    <p className="text-sm game-text-secondary mb-2">
+                      You've completed the cascade pattern
+                    </p>
+                    <div className="text-xs game-text-secondary">
+                      Current streak: {currentStreak} | Best streak: {maxStreak}
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
         </div>
       </main>
 
-      <HowToPlayModal isOpen={showModal || showHelpModal} onClose={() => {
-        closeModal();
-        setShowHelpModal(false);
-      }} />
+      <HowToPlayModal
+        isOpen={showModal || showHelpModal}
+        onClose={() => {
+          closeModal();
+          setShowHelpModal(false);
+        }}
+      />
 
       <CongratsModal
         isOpen={showCongratsModal}
@@ -204,7 +321,33 @@ const GameGrid = () => {
         onShare={handleShare}
         completionTime={completionTime}
         formatTime={formatTime}
+        currentStreak={currentStreak}
+        maxStreak={maxStreak}
       />
+
+      <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+        <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md md:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Do you give up?</DialogTitle>
+            <DialogDescription>
+              This will reveal all the answers and end the current game. Are you
+              sure you want to continue?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setShowConfirmModal(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="ghost" 
+              onClick={handleConfirmGiveUp}
+              className="bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
+            >
+              Give up
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
