@@ -196,7 +196,7 @@ const GameGrid = () => {
     <div className="min-h-screen game-background flex flex-col transition-colors duration-300">
       {/* Header */}
       <header className="border-b game-header transition-colors duration-300">
-        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 pt-3 sm:py-4">
           {/* Mobile Layout */}
           <div className="sm:hidden">
             {/* Top Row: Title and Controls */}
@@ -224,22 +224,11 @@ const GameGrid = () => {
                 </Button>
               </div>
             </div>
-            {/* Bottom Row: Timer Left-aligned */}
-            <div className="text-left">
-              <div className="text-sm font-mono game-text-primary">
-                {formatTime(getCurrentElapsedTime())}
-              </div>
-            </div>
           </div>
 
           {/* Desktop Layout */}
-          <div className="hidden sm:flex justify-between items-center">
-            <div className="flex items-center">
-              <div className="text-base font-mono game-text-primary">
-                {formatTime(getCurrentElapsedTime())}
-              </div>
-            </div>
-            <h1 className="text-3xl font-bold game-text-primary">
+          <div className="hidden sm:flex items-center">
+            <h1 className="text-3xl font-bold game-text-primary text-left flex-1">
               Cascade
             </h1>
             <div className="flex items-center gap-0.5">
@@ -268,10 +257,16 @@ const GameGrid = () => {
       {/* Main Game Area */}
       <main className="flex-1 p-3 sm:p-4 pt-4 sm:pt-8">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-4 sm:mb-8">
+          <div className="text-center mb-2 sm:mb-4">
             <p className="game-text-secondary text-xs sm:text-sm">
               Find synonyms that follow the pattern
             </p>
+          </div>
+          {/* Timer below the 'Find synonyms..' line */}
+          <div className="text-center mb-4 sm:mb-8">
+            <div className="text-base font-mono game-text-primary inline-block">
+              {formatTime(getCurrentElapsedTime())}
+            </div>
           </div>
 
           {/* Game Grid */}
