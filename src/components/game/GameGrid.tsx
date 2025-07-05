@@ -25,13 +25,32 @@ const HelpCircleIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const LightbulbIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 2a7 7 0 0 0-7 7c0 2.05 1.2 3.85 3 5.22V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.78c1.8-1.37 3-3.17 3-5.22a7 7 0 0 0-7-7z" />
+    <path d="M9 21h6" />
+  </svg>
+);
+
+
 const GameGrid = () => {
   const { showModal, closeModal } = useFirstVisit();
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [showCongratsModal, setShowCongratsModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showHintModal, setShowHintModal] = useState(false);
 
-  const inputHandling = useInputHandling(gameWords);
   const { currentStreak, maxStreak, incrementStreak, resetStreak, hasGameContributedToStreak } = useStreakCounter();
   
   // Create a ref to store the focus function to avoid circular dependency
@@ -44,21 +63,21 @@ const GameGrid = () => {
     focusNextWordRef.current?.(wordIndex);
   });
 
+  const inputHandling = useInputHandling(gameWords);
+
   const {
     userAnswers,
     setUserAnswers,
     validatedAnswers,
     gameComplete,
     gameGivenUp,
-    streakCounted,
-    setGameComplete,
     focusedCell,
     setFocusedCell,
     completionTime,
     formatTime,
     getCurrentElapsedTime,
     giveUpGame,
-    markStreakCounted,
+    
   } = gameState;
 
   const { inputRefs, handleLetterInput, handleKeyDown, focusNextWord } = inputHandling;
@@ -168,6 +187,11 @@ const GameGrid = () => {
     setShowConfirmModal(false);
   };
 
+  const handleHintClick = () => {
+    // applyHint();
+    setShowHintModal(false);
+  };
+
   return (
     <div className="min-h-screen game-background flex flex-col transition-colors duration-300">
       {/* Header */}
@@ -193,10 +217,10 @@ const GameGrid = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowConfirmModal(true)}
-                  className="p-1.5 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
+                  onClick={() => setShowHintModal(true)}
+                  className="p-1.5"
                 >
-                  Give up
+                  <LightbulbIcon className="w-5 h-5 game-text-primary" />
                 </Button>
               </div>
             </div>
@@ -231,10 +255,10 @@ const GameGrid = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setShowConfirmModal(true)}
-                                 className="p-2 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
+                onClick={() => setShowHintModal(true)}
+                className="p-2"
               >
-                Give up
+                <LightbulbIcon className="w-6 h-6 game-text-primary" />
               </Button>
             </div>
           </div>
@@ -272,6 +296,22 @@ const GameGrid = () => {
                 />
               ))}
             </div>
+          </div>
+
+          {/* Bottom Content - Aligned with title on desktop */}
+          <div className="max-w-4xl mx-auto">
+            {/* Reveal Cascade Button */}
+            {!gameComplete && (
+              <div className="text-center mb-6 sm:mb-8">
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowConfirmModal(true)}
+                  className="px-6 py-2 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-full"
+                >
+                  Reveal cascade
+                </Button>
+              </div>
+            )}
 
             {/* Completion Message */}
             {gameComplete && (
@@ -328,7 +368,7 @@ const GameGrid = () => {
       <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
         <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md md:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Do you give up?</DialogTitle>
+            <DialogTitle>Reveal the cascade?</DialogTitle>
             <DialogDescription>
               This will reveal all the answers and end the current game. Are you
               sure you want to continue?
@@ -341,9 +381,33 @@ const GameGrid = () => {
             <Button 
               variant="ghost" 
               onClick={handleConfirmGiveUp}
-              className="bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
+              className="bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-full"
             >
-              Give up
+              Reveal cascade
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showHintModal} onOpenChange={setShowHintModal}>
+        <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md md:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Coming soon !</DialogTitle>
+            {/* <DialogDescription>
+              Are you sure you want to use a hint?
+            </DialogDescription> */}
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setShowHintModal(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="ghost" 
+              onClick={handleHintClick}
+              disabled={true}
+              className="bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-full"
+            >
+              Use Hint
             </Button>
           </DialogFooter>
         </DialogContent>

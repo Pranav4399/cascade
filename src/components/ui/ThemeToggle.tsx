@@ -27,7 +27,7 @@ const ThemeToggle: React.FC = () => {
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
       {isDark ? (
-        <SunIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-gray-200 transition-colors" />
+        <SunIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white-400 hover:text-gray-200 transition-colors" />
       ) : (
         <MoonIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 hover:text-gray-800 transition-colors" />
       )}
