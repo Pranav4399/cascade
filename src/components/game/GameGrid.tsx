@@ -196,7 +196,7 @@ const GameGrid = () => {
                   onClick={() => setShowConfirmModal(true)}
                   className="p-1.5 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
                 >
-                  Reveal Cascade
+                  Give up
                 </Button>
               </div>
             </div>
