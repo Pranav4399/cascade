@@ -15,26 +15,34 @@ export const useInputHandling = (gameWords: WordData[]) => {
     setFocusedCell: (cell: FocusedCell | null) => void,
     gameComplete: boolean
   ) => {
-    // This function is now mainly a fallback since we handle input in handleKeyDown
-    // It may still be triggered by paste operations or other edge cases
     if (gameComplete) return;
 
-    if (value.length === 1 && /^[a-zA-Z]$/.test(value)) {
-      const upperValue = value.toUpperCase();
+    // Handle all text input here (works reliably on both desktop and mobile)
+    if (value.length >= 1) {
+      // Take only the last character typed (handles mobile keyboards better)
+      const lastChar = value.slice(-1);
       
-      // Always update the value and move to next box, even if it's the same character
-      const newAnswers = userAnswers.map(row => [...row]);
-      newAnswers[wordIndex][letterIndex] = upperValue;
-      setUserAnswers(newAnswers);
+      if (/^[a-zA-Z]$/.test(lastChar)) {
+        const upperValue = lastChar.toUpperCase();
+        
+        const newAnswers = userAnswers.map(row => [...row]);
+        newAnswers[wordIndex][letterIndex] = upperValue;
+        setUserAnswers(newAnswers);
 
-      // Move to next box regardless of whether the character changed
-      if (letterIndex < gameWords[wordIndex].length - 1) {
-        const nextInput = inputRefs.current[wordIndex][letterIndex + 1];
-        if (nextInput) {
-          nextInput.focus();
+        // Move to next box
+        if (letterIndex < gameWords[wordIndex].length - 1) {
+          const nextInput = inputRefs.current[wordIndex][letterIndex + 1];
+          if (nextInput) {
+            nextInput.focus();
+          }
+          setFocusedCell({ wordIndex, letterIndex: letterIndex + 1 });
         }
-        setFocusedCell({ wordIndex, letterIndex: letterIndex + 1 });
       }
+    } else if (value.length === 0) {
+      // Handle when input is cleared
+      const newAnswers = userAnswers.map(row => [...row]);
+      newAnswers[wordIndex][letterIndex] = '';
+      setUserAnswers(newAnswers);
     }
   };
 
@@ -50,6 +58,7 @@ export const useInputHandling = (gameWords: WordData[]) => {
     if (gameComplete) return;
 
     if (e.key === 'Backspace') {
+      e.preventDefault(); // Only prevent default for backspace
       const newAnswers = userAnswers.map(row => [...row]);
       newAnswers[wordIndex][letterIndex] = '';
       setUserAnswers(newAnswers);
@@ -62,47 +71,45 @@ export const useInputHandling = (gameWords: WordData[]) => {
         }
         setFocusedCell({ wordIndex, letterIndex: letterIndex - 1 });
       }
-    } else if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key)) {
-      // Handle letter input directly in keyDown to ensure it works even with prefilled characters
-      e.preventDefault(); // Prevent the default input behavior
-      
-      const upperValue = e.key.toUpperCase();
-      const newAnswers = userAnswers.map(row => [...row]);
-      newAnswers[wordIndex][letterIndex] = upperValue;
-      setUserAnswers(newAnswers);
-
-      // Move to next box
-      if (letterIndex < gameWords[wordIndex].length - 1) {
-        const nextInput = inputRefs.current[wordIndex][letterIndex + 1];
-        if (nextInput) {
-          nextInput.focus();
-        }
-        setFocusedCell({ wordIndex, letterIndex: letterIndex + 1 });
-      }
     }
+    // Remove the letter handling from onKeyDown - let onChange handle it
   };
 
   const focusNextWord = (currentWordIndex: number, validatedAnswers: boolean[], setFocusedCell: (cell: FocusedCell | null) => void, userAnswers?: string[][]) => {
     // Find the next word that isn't validated yet
     for (let i = currentWordIndex + 1; i < gameWords.length; i++) {
       if (!validatedAnswers[i]) {
-        // Find the first empty cell in this word, or the first cell if no empty cells
-        let targetLetterIndex = 0;
-        if (userAnswers && userAnswers[i]) {
-          for (let j = 0; j < userAnswers[i].length; j++) {
-            if (!userAnswers[i][j]) {
-              targetLetterIndex = j;
-              break;
+        // In cascade pattern, when word N is solved, word N+1 gets first N letters auto-filled
+        // So we should focus on position N (0-indexed) of the next word
+        const targetLetterIndex = currentWordIndex + 1;
+        
+        // Make sure the target position exists in this word
+        if (targetLetterIndex < gameWords[i].length) {
+          const nextInput = inputRefs.current[i][targetLetterIndex];
+          if (nextInput) {
+            setTimeout(() => {
+              nextInput.focus();
+              setFocusedCell({ wordIndex: i, letterIndex: targetLetterIndex });
+            }, 100); // Small delay to ensure validation state has updated
+          }
+        } else {
+          // If the calculated position doesn't exist, fall back to first empty cell
+          let fallbackIndex = 0;
+          if (userAnswers && userAnswers[i]) {
+            for (let j = 0; j < userAnswers[i].length; j++) {
+              if (!userAnswers[i][j]) {
+                fallbackIndex = j;
+                break;
+              }
             }
           }
-        }
-        
-        const nextInput = inputRefs.current[i][targetLetterIndex];
-        if (nextInput) {
-          setTimeout(() => {
-            nextInput.focus();
-            setFocusedCell({ wordIndex: i, letterIndex: targetLetterIndex });
-          }, 100); // Small delay to ensure validation state has updated
+          const nextInput = inputRefs.current[i][fallbackIndex];
+          if (nextInput) {
+            setTimeout(() => {
+              nextInput.focus();
+              setFocusedCell({ wordIndex: i, letterIndex: fallbackIndex });
+            }, 100);
+          }
         }
         return;
       }

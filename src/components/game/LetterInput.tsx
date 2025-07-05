@@ -29,6 +29,13 @@ const LetterInput: React.FC<LetterInputProps> = ({
   wordLength,
   inputRef,
 }) => {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    // Select all text when input gains focus
+    // This ensures typing replaces content instead of appending (important for mobile)
+    e.target.select();
+    onFocus();
+  };
+
   // Calculate dynamic sizing for mobile to prevent horizontal scrolling
   const getDynamicSizeClasses = () => {
     // For screens sm and above, use standard sizing
@@ -69,7 +76,7 @@ const LetterInput: React.FC<LetterInputProps> = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onKeyDown={onKeyDown}
-      onFocus={onFocus}
+      onFocus={handleFocus}
       onBlur={onBlur}
       className={`
         ${getDynamicSizeClasses()} border-2 flex items-center justify-center 

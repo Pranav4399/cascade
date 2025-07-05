@@ -16,7 +16,7 @@ interface HowToPlayModalProps {
 const HowToPlayModal: React.FC<HowToPlayModalProps> = ({ isOpen, onClose }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm sm:max-w-md mx-auto">
+      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-2xl md:max-w-3xl">
         <DialogClose onClose={onClose} />
         <DialogHeader>
           <DialogTitle className="text-lg sm:text-xl font-bold game-text-primary">
