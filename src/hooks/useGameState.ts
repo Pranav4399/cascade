@@ -219,10 +219,13 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
   };
 
   const giveUpGame = () => {
+    const endTime = Date.now();
+    const totalTime = endTime - startTime;
     const correctAnswers = gameWords.map(word => word.answer.toUpperCase().split(''));
     setUserAnswers(correctAnswers);
     setGameComplete(true);
     setGameGivenUp(true);
+    setCompletionTime(totalTime);
   };
 
   const markStreakCounted = () => {

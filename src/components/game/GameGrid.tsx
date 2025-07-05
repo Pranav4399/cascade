@@ -190,14 +190,6 @@ const GameGrid = () => {
                 >
                   <HelpCircleIcon className="w-5 h-5 game-text-primary" />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowConfirmModal(true)}
-                  className="p-1.5 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
-                >
-                  Give up
-                </Button>
               </div>
             </div>
             {/* Bottom Row: Timer Left-aligned */}
@@ -227,14 +219,6 @@ const GameGrid = () => {
                 className="p-2"
               >
                 <HelpCircleIcon className="w-6 h-6 game-text-primary" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowConfirmModal(true)}
-                                 className="p-2 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
-              >
-                Give up
               </Button>
             </div>
           </div>
@@ -272,6 +256,22 @@ const GameGrid = () => {
                 />
               ))}
             </div>
+          </div>
+
+          {/* Bottom Content - Aligned with title on desktop */}
+          <div className="max-w-4xl mx-auto">
+            {/* Reveal Cascade Button */}
+            {!gameComplete && (
+              <div className="text-center mb-6 sm:mb-8">
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowConfirmModal(true)}
+                  className="px-6 py-2 bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-full"
+                >
+                  Reveal cascade
+                </Button>
+              </div>
+            )}
 
             {/* Completion Message */}
             {gameComplete && (
@@ -328,7 +328,7 @@ const GameGrid = () => {
       <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
         <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md md:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Do you give up?</DialogTitle>
+            <DialogTitle>Reveal the cascade?</DialogTitle>
             <DialogDescription>
               This will reveal all the answers and end the current game. Are you
               sure you want to continue?
@@ -341,9 +341,9 @@ const GameGrid = () => {
             <Button 
               variant="ghost" 
               onClick={handleConfirmGiveUp}
-              className="bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-none"
+              className="bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-full"
             >
-              Give up
+              Reveal cascade
             </Button>
           </DialogFooter>
         </DialogContent>
