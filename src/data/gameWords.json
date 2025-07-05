@@ -25,11 +25,11 @@
     "id": 3,
     "date": "2025-07-06",
     "words": [
-      { "clue": "FLITWICK'S CLASS", "answer": "CHARMS", "length":6 }, 
+      { "clue": "MAGIC SPELLS", "answer": "CHARMS", "length":6 }, 
       { "clue": "ALADDIN'S RIDE", "answer": "CARPET", "length":6 }, 
-      { "clue": "DANCE", "answer": "CAVORT", "length":6 }, 
+      { "clue": "WARNING", "answer": "CAVEAT", "length":6 }, 
       { "clue": "GIVING IN", "answer": "CAVING", "length":6 }, 
-      { "clue": "CRITIC", "answer": "CAVILER", "length":7 }
+      { "clue": "A DELICACY", "answer": "CAVIAR", "length":6 }
     ]
   },
   {
