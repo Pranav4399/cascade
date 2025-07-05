@@ -3,14 +3,13 @@ import { createAudioChimes } from '@/utils/audio';
 import { useEffect, useState } from 'react';
 
 interface GameSaveData {
-  userAnswers: string[][] | string[]; // Support both old and new format
+  userAnswers: string[][];
   validatedAnswers: boolean[];
   gameComplete: boolean;
   gameGivenUp?: boolean;
-  streakCounted?: boolean; // Track if this completion was already counted for streak
   startTime: number;
   completionTime?: number;
-  version?: number; // Add version for migration
+  
 }
 
 export const useGameState = (gameWords: WordData[], gameId: string, onGameComplete?: () => void, onWordValidated?: (wordIndex: number) => void) => {
@@ -20,7 +19,7 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
   const [validatedAnswers, setValidatedAnswers] = useState<boolean[]>(Array(gameWords.length).fill(false));
   const [gameComplete, setGameComplete] = useState(false);
   const [gameGivenUp, setGameGivenUp] = useState(false);
-  const [streakCounted, setStreakCounted] = useState(false);
+
   const [focusedCell, setFocusedCell] = useState<FocusedCell | null>(null);
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [completionTime, setCompletionTime] = useState<number | null>(null);
@@ -47,29 +46,10 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
       try {
         const gameData: GameSaveData = JSON.parse(savedData);
         
-        // Migration: Convert old string[] format to string[][]
-        let migratedUserAnswers: string[][];
-        if (gameData.version === undefined && Array.isArray(gameData.userAnswers) && 
-            gameData.userAnswers.length > 0 && typeof gameData.userAnswers[0] === 'string') {
-          // Old format: string[]
-          migratedUserAnswers = (gameData.userAnswers as string[]).map((answer, index) => {
-            const wordLength = gameWords[index].length;
-            const letterArray = Array(wordLength).fill('');
-            for (let i = 0; i < Math.min(answer.length, wordLength); i++) {
-              letterArray[i] = answer[i];
-            }
-            return letterArray;
-          });
-        } else {
-          // New format: string[][]
-          migratedUserAnswers = gameData.userAnswers as string[][];
-        }
-        
-        setUserAnswers(migratedUserAnswers);
+        setUserAnswers(gameData.userAnswers);
         setValidatedAnswers(gameData.validatedAnswers);
         setGameComplete(gameData.gameComplete);
         setGameGivenUp(gameData.gameGivenUp || false);
-        setStreakCounted(gameData.streakCounted || false);
         setStartTime(gameData.startTime);
         setCompletionTime(gameData.completionTime || null);
       } catch (error) {
@@ -85,13 +65,11 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
       validatedAnswers,
       gameComplete,
       gameGivenUp,
-      streakCounted,
       startTime,
       completionTime: completionTime || undefined,
-      version: 1, // Mark as new format
     };
     localStorage.setItem(storageKey, JSON.stringify(gameData));
-  }, [userAnswers, validatedAnswers, gameComplete, gameGivenUp, streakCounted, startTime, completionTime, storageKey]);
+  }, [userAnswers, validatedAnswers, gameComplete, gameGivenUp, startTime, completionTime, storageKey]);
 
   // Auto-validate answers and check for completion
   useEffect(() => {
@@ -210,7 +188,6 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
     setValidatedAnswers(Array(gameWords.length).fill(false));
     setGameComplete(false);
     setGameGivenUp(false);
-    setStreakCounted(false);
     setFocusedCell(null);
     setStartTime(newStartTime);
     setCompletionTime(null);
@@ -228,8 +205,9 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
     setCompletionTime(totalTime);
   };
 
-  const markStreakCounted = () => {
-    setStreakCounted(true);
+  const applyHint = () => {
+    // Implement hint logic here
+    console.log("Hint applied");
   };
 
   const formatTime = (milliseconds: number): string => {
@@ -253,15 +231,14 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
     validatedAnswers,
     gameComplete,
     gameGivenUp,
-    streakCounted,
     setGameComplete,
     focusedCell,
     setFocusedCell,
     resetGame,
     giveUpGame,
-    markStreakCounted,
     completionTime,
     formatTime,
     getCurrentElapsedTime,
+    applyHint
   };
 }; 

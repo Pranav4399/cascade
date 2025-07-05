@@ -6,7 +6,7 @@ export const createAudioChimes = () => {
   const createChime = (frequencies: number[], duration: number = 0.3): (() => void) => {
     return () => {
       try {
-        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
         const gainNode = audioContext.createGain();
         gainNode.connect(audioContext.destination);
         gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
