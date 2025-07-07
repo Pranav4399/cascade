@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { currentGameData, gameWords } from '@/data/gameWords';
 import { useFirstVisit } from '@/hooks/useFirstVisit';
-import { useGameState } from '@/hooks/useGameState';
+import { MAX_HINTS, useGameState } from '@/hooks/useGameState';
 import { useInputHandling } from '@/hooks/useInputHandling';
 import { useStreakCounter } from '@/hooks/useStreakCounter';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -77,7 +77,8 @@ const GameGrid = () => {
     formatTime,
     getCurrentElapsedTime,
     giveUpGame,
-    
+    applyHint,
+    hintsUsed,
   } = gameState;
 
   const { inputRefs, handleLetterInput, handleKeyDown, focusNextWord } = inputHandling;
@@ -188,7 +189,7 @@ const GameGrid = () => {
   };
 
   const handleHintClick = () => {
-    // applyHint();
+    applyHint();
     setShowHintModal(false);
   };
 
@@ -240,19 +241,19 @@ const GameGrid = () => {
                 className="p-2"
               >
                 <HelpCircleIcon className="w-6 h-6 game-text-primary" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowHintModal(true)}
-                className="p-2"
-              >
-                <LightbulbIcon className="w-6 h-6 game-text-primary" />
-              </Button>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowHintModal(true)}
+                  className="p-2"
+                >
+                  <LightbulbIcon className="w-6 h-6 game-text-primary" />
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
       {/* Main Game Area */}
       <main className="flex-1 p-3 sm:p-4 pt-4 sm:pt-8">
@@ -387,10 +388,10 @@ const GameGrid = () => {
       <Dialog open={showHintModal} onOpenChange={setShowHintModal}>
         <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md md:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Coming soon !</DialogTitle>
-            {/* <DialogDescription>
-              Are you sure you want to use a hint?
-            </DialogDescription> */}
+            <DialogTitle>Need a hint?</DialogTitle>
+            <DialogDescription>
+              You have {MAX_HINTS - hintsUsed} hints remaining.
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setShowHintModal(false)}>
@@ -399,7 +400,7 @@ const GameGrid = () => {
             <Button 
               variant="ghost" 
               onClick={handleHintClick}
-              disabled={true}
+              disabled={hintsUsed >= MAX_HINTS || gameComplete}
               className="bg-white dark:bg-gray-800 border border-black dark:border-gray-300 text-black dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-full"
             >
               Use Hint

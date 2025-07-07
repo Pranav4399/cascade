@@ -1,3 +1,4 @@
+import { getHint } from '@/lib/hint';
 import { FocusedCell, WordData } from '@/types/game';
 import { createAudioChimes } from '@/utils/audio';
 import { useEffect, useState } from 'react';
@@ -9,8 +10,11 @@ interface GameSaveData {
   gameGivenUp?: boolean;
   startTime: number;
   completionTime?: number;
-  
+  hintsUsed?: number;
+  yellowHintUsed?: boolean;
 }
+
+export const MAX_HINTS = 3;
 
 export const useGameState = (gameWords: WordData[], gameId: string, onGameComplete?: () => void, onWordValidated?: (wordIndex: number) => void) => {
   const [userAnswers, setUserAnswers] = useState<string[][]>(
@@ -19,6 +23,8 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
   const [validatedAnswers, setValidatedAnswers] = useState<boolean[]>(Array(gameWords.length).fill(false));
   const [gameComplete, setGameComplete] = useState(false);
   const [gameGivenUp, setGameGivenUp] = useState(false);
+  const [hintsUsed, setHintsUsed] = useState(0);
+  const [yellowHintUsed, setYellowHintUsed] = useState(false);
 
   const [focusedCell, setFocusedCell] = useState<FocusedCell | null>(null);
   const [startTime, setStartTime] = useState<number>(Date.now());
@@ -52,6 +58,8 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
         setGameGivenUp(gameData.gameGivenUp || false);
         setStartTime(gameData.startTime);
         setCompletionTime(gameData.completionTime || null);
+        setHintsUsed(gameData.hintsUsed || 0);
+        setYellowHintUsed(gameData.yellowHintUsed || false);
       } catch (error) {
         console.warn('Failed to load saved game data:', error);
       }
@@ -67,9 +75,11 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
       gameGivenUp,
       startTime,
       completionTime: completionTime || undefined,
+      hintsUsed,
+      yellowHintUsed,
     };
     localStorage.setItem(storageKey, JSON.stringify(gameData));
-  }, [userAnswers, validatedAnswers, gameComplete, gameGivenUp, startTime, completionTime, storageKey]);
+  }, [userAnswers, validatedAnswers, gameComplete, gameGivenUp, startTime, completionTime, hintsUsed, yellowHintUsed, storageKey]);
 
   // Auto-validate answers and check for completion
   useEffect(() => {
@@ -191,6 +201,8 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
     setFocusedCell(null);
     setStartTime(newStartTime);
     setCompletionTime(null);
+    setHintsUsed(0);
+    setYellowHintUsed(false);
     // Clear saved game data
     localStorage.removeItem(storageKey);
   };
@@ -206,8 +218,22 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
   };
 
   const applyHint = () => {
-    // Implement hint logic here
-    console.log("Hint applied");
+    if (hintsUsed >= MAX_HINTS || gameComplete) return;
+
+    const { newAnswers, hintApplied, wasYellowHint } = getHint(
+      userAnswers,
+      gameWords,
+      validatedAnswers,
+      yellowHintUsed
+    );
+
+    if (hintApplied) {
+      setUserAnswers(newAnswers);
+      setHintsUsed(prev => prev + 1);
+      if (wasYellowHint) {
+        setYellowHintUsed(true);
+      }
+    }
   };
 
   const formatTime = (milliseconds: number): string => {
@@ -239,6 +265,7 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
     completionTime,
     formatTime,
     getCurrentElapsedTime,
-    applyHint
+    applyHint,
+    hintsUsed,
   };
 }; 
