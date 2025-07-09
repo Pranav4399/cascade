@@ -1,3 +1,5 @@
+export type Difficulty = 'easy' | 'medium' | 'hard';
+
 export interface WordData {
   clue: string;
   answer: string;
