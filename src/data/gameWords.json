@@ -130,5 +130,16 @@
       { "clue": "LET OUT", "answer": "LEASED", "length":6 }, 
       { "clue": "TIED UP", "answer": "LEASHED", "length":7 }
     ]
+  },
+  {
+    "id": 13,
+    "date": "2025-07-16",
+    "words": [
+      { "clue": "SEVEN'S SUCCESSOR", "answer": "EIGHT", "length":5 }, 
+      { "clue": "ANTICIPATE", "answer": "EXPECT", "length":6 }, 
+      { "clue": "BACKGROUND ACTOR", "answer": "EXTRA", "length":5 }, 
+      { "clue": "REACH OUT", "answer": "EXTEND", "length":6 }, 
+      { "clue": "MITIGATE", "answer": "EXTENUATE", "length":9 }
+    ]
   }
 ] 
