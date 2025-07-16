@@ -142,4 +142,15 @@
       { "clue": "MITIGATE", "answer": "EXTENUATE" }
     ]
   }
+  {
+    "id": 14,
+    "date": "2025-07-17",
+    "words": [
+      { "clue": "HUMOUROUS", "answer": "FUNNY" }, 
+      { "clue": "ANIMAL FOOD", "answer": "FODDER" }, 
+      { "clue": "CASTLES", "answer": "FORTS" }, 
+      { "clue": "RECIPE", "answer": "FORMULA" }, 
+      { "clue": "STRUCTURE", "answer": "FORMAT" }
+    ]
+  }
 ] 
