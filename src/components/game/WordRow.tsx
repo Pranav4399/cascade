@@ -31,10 +31,10 @@ const WordRow: React.FC<WordRowProps> = ({
 }) => {
   // Calculate dynamic gap based on word length for mobile
   const getDynamicGapClass = () => {
-    if (word.length >= 9) {
+    if (word.answer.length >= 9) {
       // Very long words: small gap on mobile (still need some space)
       return 'gap-0.5 sm:gap-1';
-    } else if (word.length >= 8) {
+    } else if (word.answer.length >= 8) {
       // Long words: standard gap on mobile
       return 'gap-0.5 sm:gap-1';
     } else {
@@ -46,7 +46,7 @@ const WordRow: React.FC<WordRowProps> = ({
   const renderLetterBoxes = () => {
     const boxes = [];
     
-    for (let i = 0; i < word.length; i++) {
+    for (let i = 0; i < word.answer.length; i++) {
       const letter = userAnswerLetters[i] || '';
       // Yellow highlight: first box of first row, first two of second row, etc.
       const isHighlighted = i < wordIndex + 1;
@@ -66,7 +66,7 @@ const WordRow: React.FC<WordRowProps> = ({
           isFocused={isFocused}
           isCorrect={isCorrect}
           disabled={gameComplete}
-          wordLength={word.length}
+          wordLength={word.answer.length}
           inputRef={(el) => {
             if (inputRefs.current[wordIndex]) {
               inputRefs.current[wordIndex][i] = el;

@@ -3,7 +3,6 @@ export type Difficulty = 'easy' | 'medium' | 'hard';
 export interface WordData {
   clue: string;
   answer: string;
-  length: number;
 }
 
 export interface FocusedCell {

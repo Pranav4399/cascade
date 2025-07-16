@@ -30,7 +30,7 @@ export const useInputHandling = (gameWords: WordData[]) => {
         setUserAnswers(newAnswers);
 
         // Move to next box
-        if (letterIndex < gameWords[wordIndex].length - 1) {
+        if (letterIndex < gameWords[wordIndex].answer.length - 1) {
           const nextInput = inputRefs.current[wordIndex][letterIndex + 1];
           if (nextInput) {
             nextInput.focus();
@@ -84,7 +84,7 @@ export const useInputHandling = (gameWords: WordData[]) => {
         const targetLetterIndex = currentWordIndex + 1;
         
         // Make sure the target position exists in this word
-        if (targetLetterIndex < gameWords[i].length) {
+        if (targetLetterIndex < gameWords[i].answer.length) {
           const nextInput = inputRefs.current[i][targetLetterIndex];
           if (nextInput) {
             setTimeout(() => {

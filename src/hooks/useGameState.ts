@@ -18,7 +18,7 @@ export const MAX_HINTS = 3;
 
 export const useGameState = (gameWords: WordData[], gameId: string, onGameComplete?: () => void, onWordValidated?: (wordIndex: number) => void) => {
   const [userAnswers, setUserAnswers] = useState<string[][]>(
-    () => gameWords.map(word => Array(word.length).fill(''))
+    () => gameWords.map(word => Array(word.answer.length).fill(''))
   );
   const [validatedAnswers, setValidatedAnswers] = useState<boolean[]>(Array(gameWords.length).fill(false));
   const [gameComplete, setGameComplete] = useState(false);
@@ -85,11 +85,11 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
   useEffect(() => {
     const newValidatedAnswers = [...validatedAnswers];
     let hasChanges = false;
-    let newlyValidatedWords: number[] = [];
+    const newlyValidatedWords: number[] = [];
 
     userAnswers.forEach((answerArray, index) => {
       const answer = answerArray.join('');
-      if (answer.length === gameWords[index].length && answer === gameWords[index].answer) {
+      if (answer.length === gameWords[index].answer.length && answer === gameWords[index].answer) {
         if (!validatedAnswers[index]) {
           newValidatedAnswers[index] = true;
           newlyValidatedWords.push(index);
@@ -172,7 +172,7 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
           }
           
           // Preserve any correct letters beyond the prefix
-          for (let i = sharedPrefixLength; i < word.length; i++) {
+          for (let i = sharedPrefixLength; i < word.answer.length; i++) {
             const existingLetter = newAnswers[wordIndex][i];
             const correctLetter = word.answer[i];
             
@@ -194,7 +194,7 @@ export const useGameState = (gameWords: WordData[], gameId: string, onGameComple
 
   const resetGame = () => {
     const newStartTime = Date.now();
-    setUserAnswers(gameWords.map(word => Array(word.length).fill('')));
+    setUserAnswers(gameWords.map(word => Array(word.answer.length).fill('')));
     setValidatedAnswers(Array(gameWords.length).fill(false));
     setGameComplete(false);
     setGameGivenUp(false);

@@ -279,7 +279,7 @@ const GameGrid = () => {
                   word={word}
                   wordIndex={index}
                   userAnswerLetters={
-                    userAnswers[index] || Array(word.length).fill("")
+                    userAnswers[index] || Array(word.answer.length).fill("")
                   }
                   isValidated={validatedAnswers[index]}
                   focusedCell={focusedCell}

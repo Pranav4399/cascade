@@ -28,7 +28,7 @@ export const getHint = (
   for (let i = 0; i < gameWords.length; i++) {
     if (validatedAnswers[i]) continue;
 
-    for (let j = 0; j < gameWords[i].length; j++) {
+    for (let j = 0; j < gameWords[i].answer.length; j++) {
       if (newAnswers[i][j] === '') {
         const isYellowBox = j < i;
         if (isYellowBox) {
