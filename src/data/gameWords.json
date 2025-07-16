@@ -3,143 +3,143 @@
     "id": 1,
     "date": "2025-07-04",
     "words": [
-      { "clue": "GUNS/GUNNERS", "answer": "ARSENAL", "length":7 }, 
-      { "clue": "PARALLEL", "answer": "ANALOGY", "length":7 }, 
-      { "clue": "OPPOSITE", "answer": "ANTONYM", "length":7 }, 
-      { "clue": "INSECT APPENDAGE", "answer": "ANTENNA", "length":7 }, 
-      { "clue": "A DEER THAT RUNS AWAY", "answer": "ANTELOPE", "length":8 }
+      { "clue": "GUNS/GUNNERS", "answer": "ARSENAL" }, 
+      { "clue": "PARALLEL", "answer": "ANALOGY" }, 
+      { "clue": "OPPOSITE", "answer": "ANTONYM" }, 
+      { "clue": "INSECT APPENDAGE", "answer": "ANTENNA" }, 
+      { "clue": "A DEER THAT RUNS AWAY", "answer": "ANTELOPE" }
     ]
   },
   {
     "id": 2,
     "date": "2025-07-05",
     "words": [
-      { "clue": "BORING", "answer": "BANAL", "length":5 }, 
-      { "clue": "A LIQUOR", "answer": "BRANDY", "length":6 }, 
-      { "clue": "YOUNG CHICKEN", "answer": "BROILER", "length":7 }, 
-      { "clue": "SOOTHING STATEMENT", "answer": "BROMIDE", "length":7 }, 
-      { "clue": "FRATERNALISM", "answer": "BROMANCE", "length":8 }
+      { "clue": "BORING", "answer": "BANAL" }, 
+      { "clue": "A LIQUOR", "answer": "BRANDY" }, 
+      { "clue": "YOUNG CHICKEN", "answer": "BROILER" }, 
+      { "clue": "SOOTHING STATEMENT", "answer": "BROMIDE" }, 
+      { "clue": "FRATERNALISM", "answer": "BROMANCE" }
     ]
   },
   {
     "id": 3,
     "date": "2025-07-06",
     "words": [
-      { "clue": "MAGIC SPELLS", "answer": "CHARMS", "length":6 }, 
-      { "clue": "ALADDIN'S RIDE", "answer": "CARPET", "length":6 }, 
-      { "clue": "WARNING", "answer": "CAVEAT", "length":6 }, 
-      { "clue": "GIVING IN", "answer": "CAVING", "length":6 }, 
-      { "clue": "A DELICACY", "answer": "CAVIAR", "length":6 }
+      { "clue": "MAGIC SPELLS", "answer": "CHARMS" }, 
+      { "clue": "ALADDIN'S RIDE", "answer": "CARPET" }, 
+      { "clue": "WARNING", "answer": "CAVEAT" }, 
+      { "clue": "GIVING IN", "answer": "CAVING" }, 
+      { "clue": "A DELICACY", "answer": "CAVIAR" }
     ]
   },
   {
     "id": 4,
     "date": "2025-07-07",
     "words": [
-      { "clue": "SWEETHEART", "answer": "DARLING", "length":7 }, 
-      { "clue": "FATAL", "answer": "DEADLY", "length":6 }, 
-      { "clue": "TYRANT", "answer": "DESPOT", "length":6 }, 
-      { "clue": "DOOM", "answer": "DESTINE", "length":7 }, 
-      { "clue": "RELAX", "answer": "DESTRESS", "length":8 }
+      { "clue": "SWEETHEART", "answer": "DARLING" }, 
+      { "clue": "FATAL", "answer": "DEADLY" }, 
+      { "clue": "TYRANT", "answer": "DESPOT" }, 
+      { "clue": "DOOM", "answer": "DESTINE" }, 
+      { "clue": "RELAX", "answer": "DESTRESS" }
     ]
   },
   {
     "id": 5,
     "date": "2025-07-08",
     "words": [
-      { "clue": "PUZZLE", "answer": "ENIGMA", "length":6 }, 
-      { "clue": "TIMELESS", "answer": "EVERGREEN", "length":9 }, 
-      { "clue": "ASSESS", "answer": "EVALUATE", "length":8 }, 
-      { "clue": "'BRING ME TO LIFE' BAND", "answer": "EVANESCENCE", "length":11 }, 
-      { "clue": "MISSIONARY", "answer": "EVANGELIST", "length":10 }
+      { "clue": "PUZZLE", "answer": "ENIGMA" }, 
+      { "clue": "TIMELESS", "answer": "EVERGREEN" }, 
+      { "clue": "ASSESS", "answer": "EVALUATE" }, 
+      { "clue": "'BRING ME TO LIFE' BAND", "answer": "EVANESCENCE" }, 
+      { "clue": "MISSIONARY", "answer": "EVANGELIST" }
     ]
   },
   {
     "id": 6,
     "date": "2025-07-09",
     "words": [
-      { "clue": "STRIKER", "answer": "FORWARD", "length":7 }, 
-      { "clue": "AIRPLANES", "answer": "FLIGHTS", "length":7 }, 
-      { "clue": "OBVIOUS BASKETBALL FOUL", "answer": "FLAGRANT", "length":8 }, 
-      { "clue": "CRITICISED", "answer": "FLAMED", "length":6 }, 
-      { "clue": "SWASHBUCKLING", "answer": "FLAMBOYANT", "length":10 }
+      { "clue": "STRIKER", "answer": "FORWARD" }, 
+      { "clue": "AIRPLANES", "answer": "FLIGHTS" }, 
+      { "clue": "OBVIOUS BASKETBALL FOUL", "answer": "FLAGRANT" }, 
+      { "clue": "CRITICISED", "answer": "FLAMED" }, 
+      { "clue": "SWASHBUCKLING", "answer": "FLAMBOYANT" }
     ]
   },
   {
     "id": 7,
     "date": "2025-07-10",
     "words": [
-      { "clue": "10^100", "answer": "GOOGOL", "length":6 }, 
-      { "clue": "HUSTLER", "answer": "GRINDER", "length":7 }, 
-      { "clue": "SEIZING", "answer": "GRABBING", "length":8 }, 
-      { "clue": "PEBBLES AND STONES", "answer": "GRAVEL", "length":6 }, 
-      { "clue": "WHY DO WE FALL?", "answer": "GRAVITY", "length":7 }
+      { "clue": "10^100", "answer": "GOOGOL" }, 
+      { "clue": "HUSTLER", "answer": "GRINDER" }, 
+      { "clue": "SEIZING", "answer": "GRABBING" }, 
+      { "clue": "PEBBLES AND STONES", "answer": "GRAVEL" }, 
+      { "clue": "WHY DO WE FALL?", "answer": "GRAVITY" }
     ]
   },
   {
     "id": 8,
     "date": "2025-07-11",
     "words": [
-      { "clue": "MODEST", "answer": "HUMBLE", "length":6 }, 
-      { "clue": "DISRUPT A COMIC", "answer": "HECKLE", "length":6 }, 
-      { "clue": "INDICATOR", "answer": "HERALD", "length":6 }, 
-      { "clue": "DISSENT", "answer": "HERESY", "length":6 }, 
-      { "clue": "ANCESTRY", "answer": "HEREDITY", "length":8 }
+      { "clue": "MODEST", "answer": "HUMBLE" }, 
+      { "clue": "DISRUPT A COMIC", "answer": "HECKLE" }, 
+      { "clue": "INDICATOR", "answer": "HERALD" }, 
+      { "clue": "DISSENT", "answer": "HERESY" }, 
+      { "clue": "ANCESTRY", "answer": "HEREDITY" }
     ]
   },
   {
     "id": 9,
     "date": "2025-07-12",
     "words": [
-      { "clue": "NINCOMPOOPS", "answer": "IDIOTS", "length":6 }, 
-      { "clue": "CONCAVE", "answer": "INWARD", "length":6 }, 
-      { "clue": "CHANT", "answer": "INTONE", "length":6 }, 
-      { "clue": "PURPOSE", "answer": "INTENT", "length":6 }, 
-      { "clue": "APPRENTICE", "answer": "INTERN", "length":6 }
+      { "clue": "NINCOMPOOPS", "answer": "IDIOTS" }, 
+      { "clue": "CONCAVE", "answer": "INWARD" }, 
+      { "clue": "CHANT", "answer": "INTONE" }, 
+      { "clue": "PURPOSE", "answer": "INTENT" }, 
+      { "clue": "APPRENTICE", "answer": "INTERN" }
     ]
   },
   {
     "id": 10,
     "date": "2025-07-13",
     "words": [
-      { "clue": "A TRUMP CARD", "answer": "JOKER", "length":5 }, 
-      { "clue": "BUZZWORDS", "answer": "JARGON", "length":6 }, 
-      { "clue": "HOT TUB", "answer": "JACUZZI", "length":7 }, 
-      { "clue": "MUSCULAR", "answer": "JACKED", "length":6 }, 
-      { "clue": "BONANZA", "answer": "JACKPOT", "length":7 }
+      { "clue": "A TRUMP CARD", "answer": "JOKER" }, 
+      { "clue": "BUZZWORDS", "answer": "JARGON" }, 
+      { "clue": "HOT TUB", "answer": "JACUZZI" }, 
+      { "clue": "MUSCULAR", "answer": "JACKED" }, 
+      { "clue": "BONANZA", "answer": "JACKPOT" }
     ]
   },
   {
     "id": 11,
     "date": "2025-07-14",
     "words": [
-      { "clue": "A SAUCE", "answer": "KETCHUP", "length":7 }, 
-      { "clue": "STALL", "answer": "KIOSK", "length":5 }, 
-      { "clue": "EMPIRE", "answer": "KINGDOM", "length":7 }, 
-      { "clue": "IGNITE", "answer": "KINDLE", "length":6 }, 
-      { "clue": "NICER/A JOY", "answer": "KINDER", "length":6 }
+      { "clue": "A SAUCE", "answer": "KETCHUP" }, 
+      { "clue": "STALL", "answer": "KIOSK" }, 
+      { "clue": "EMPIRE", "answer": "KINGDOM" }, 
+      { "clue": "IGNITE", "answer": "KINDLE" }, 
+      { "clue": "NICER/A JOY", "answer": "KINDER" }
     ]
   },
   {
     "id": 12,
     "date": "2025-07-15",
     "words": [
-      { "clue": "AFFAIR", "answer": "LIAISON", "length":7 }, 
-      { "clue": "A PRIMATE", "answer": "LEMURS", "length":6 }, 
-      { "clue": "BOSS", "answer": "LEADER", "length":6 }, 
-      { "clue": "LET OUT", "answer": "LEASED", "length":6 }, 
-      { "clue": "TIED UP", "answer": "LEASHED", "length":7 }
+      { "clue": "AFFAIR", "answer": "LIAISON" }, 
+      { "clue": "A PRIMATE", "answer": "LEMURS" }, 
+      { "clue": "BOSS", "answer": "LEADER" }, 
+      { "clue": "LET OUT", "answer": "LEASED" }, 
+      { "clue": "TIED UP", "answer": "LEASHED" }
     ]
   },
   {
     "id": 13,
     "date": "2025-07-16",
     "words": [
-      { "clue": "SEVEN'S SUCCESSOR", "answer": "EIGHT", "length":5 }, 
-      { "clue": "ANTICIPATE", "answer": "EXPECT", "length":6 }, 
-      { "clue": "BACKGROUND ACTOR", "answer": "EXTRA", "length":5 }, 
-      { "clue": "REACH OUT", "answer": "EXTEND", "length":6 }, 
-      { "clue": "MITIGATE", "answer": "EXTENUATE", "length":9 }
+      { "clue": "SEVEN'S SUCCESSOR", "answer": "EIGHT" }, 
+      { "clue": "ANTICIPATE", "answer": "EXPECT" }, 
+      { "clue": "BACKGROUND ACTOR", "answer": "EXTRA" }, 
+      { "clue": "REACH OUT", "answer": "EXTEND" }, 
+      { "clue": "MITIGATE", "answer": "EXTENUATE" }
     ]
   }
 ] 

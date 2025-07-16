@@ -1,7 +1,7 @@
 import { Difficulty, WordData } from '@/types/game';
 
 // --- Helper Functions ---
-const shuffleArray = (array: any[]) => {
+const shuffleArray = (array: string[]) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
@@ -33,7 +33,6 @@ const findCascade = (
     const newWord: WordData = {
       clue: dictionary[word],
       answer: word.toUpperCase(),
-      length: word.length,
     };
 
     const newUsedAnswers = new Set(usedAnswers);
@@ -88,7 +87,6 @@ export const generatePuzzle = (
         const firstWord: WordData = {
             clue: dictionary[startWord],
             answer: startWord.toUpperCase(),
-            length: startWord.length,
         };
 
         const usedAnswers = new Set([firstWord.answer]);
