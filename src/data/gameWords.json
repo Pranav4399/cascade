@@ -152,5 +152,27 @@
       { "clue": "RECIPE", "answer": "FORMULA" }, 
       { "clue": "STRUCTURE", "answer": "FORMAT" }
     ]
+  },
+  {
+    "id": 15,
+    "date": "2025-07-18",
+    "words": [
+      { "clue": "WEIGHT UNIT", "answer": "POUND" }, 
+      { "clue": "EVIDENCE", "answer": "PROOF" }, 
+      { "clue": "2, 3, 5, ETC.", "answer": "PRIMES" }, 
+      { "clue": "PUBLISH", "answer": "PRINT" }, 
+      { "clue": "CHIEF", "answer": "PRINCIPAL" }
+    ]
+  },
+  {
+    "id": 16,
+    "date": "2025-07-19",
+    "words": [
+      { "clue": "SMILES", "answer": "BEAMS" }, 
+      { "clue": "A CARD GAME", "answer": "BRIDGE" }, 
+      { "clue": "AN ALLOY", "answer": "BRASS" }, 
+      { "clue": "2 GOALS IN A GAME", "answer": "BRACE" }, 
+      { "clue": "A WALL FIXTURE", "answer": "BRACKET" }
+    ]
   }
 ] 
