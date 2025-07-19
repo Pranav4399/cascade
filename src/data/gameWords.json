@@ -174,5 +174,27 @@
       { "clue": "2 GOALS IN A GAME", "answer": "BRACE" }, 
       { "clue": "A WALL FIXTURE", "answer": "BRACKET" }
     ]
+  },
+  {
+    "id": 17,
+    "date": "2025-07-20",
+    "words": [
+      { "clue": "LOTION", "answer": "CREAM" }, 
+      { "clue": "ROUGH", "answer": "COARSE" }, 
+      { "clue": "TYPE OF PLAY", "answer": "COMEDY" }, 
+      { "clue": "NOT RARE", "answer": "COMMON" }, 
+      { "clue": "PROMISE", "answer": "COMMIT" }
+    ]
+  },
+  {
+    "id": 18,
+    "date": "2025-07-21",
+    "words": [
+      { "clue": "BLADE", "answer": "SWORD" }, 
+      { "clue": "HORSE HOUSE", "answer": "STABLE" }, 
+      { "clue": "AN ALLOY", "answer": "STEEL" }, 
+      { "clue": "LOOT", "answer": "STEAL" }, 
+      { "clue": "STABLE", "answer": "STEADY" }
+    ]
   }
 ] 
