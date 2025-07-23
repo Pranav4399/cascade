@@ -207,5 +207,16 @@
       { "clue": "VIRAL 2017 SONG", "answer": "CLOSER" }, 
       { "clue": "CABINET", "answer": "CLOSET" }
     ]
+  },
+  {
+    "id": 20,
+    "date": "2025-07-24",
+    "words": [
+      { "clue": "BURDEN", "answer": "WEIGHT" }, 
+      { "clue": "DEVOUR FOOD", "answer": "WOLF" }, 
+      { "clue": "TOILED", "answer": "WORKED" }, 
+      { "clue": "DETERIORATE", "answer": "WORSEN" }, 
+      { "clue": "REVERE", "answer": "WORSHIP" }
+    ]
   }
 ] 
