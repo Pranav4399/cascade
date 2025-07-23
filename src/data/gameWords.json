@@ -196,5 +196,16 @@
       { "clue": "LOOT", "answer": "STEAL" }, 
       { "clue": "STABLE", "answer": "STEADY" }
     ]
+  },
+  {
+    "id": 19,
+    "date": "2025-07-23",
+    "words": [
+      { "clue": "IMPRISONED", "answer": "CAGED" }, 
+      { "clue": "A SUIT", "answer": "CLUBS" }, 
+      { "clue": "A COLDPLAY SONG", "answer": "CLOCKS" }, 
+      { "clue": "VIRAL 2017 SONG", "answer": "CLOSER" }, 
+      { "clue": "CABIENT", "answer": "CLOSET" }
+    ]
   }
 ] 
