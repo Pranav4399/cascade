@@ -218,5 +218,16 @@
       { "clue": "DETERIORATE", "answer": "WORSEN" }, 
       { "clue": "REVERE", "answer": "WORSHIP" }
     ]
+  },
+  {
+    "id": 21,
+    "date": "2025-07-25",
+    "words": [
+      { "clue": "A CHESS MOVE", "answer": "CASTLE" }, 
+      { "clue": "PILLAR", "answer": "COLUMN" }, 
+      { "clue": "AGREE", "answer": "COMPLY" }, 
+      { "clue": "TRAVEL", "answer": "COMMUTE" }, 
+      { "clue": "APPRECIATE", "answer": "COMMEND" }
+    ]
   }
 ] 
