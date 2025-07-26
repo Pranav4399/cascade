@@ -240,5 +240,16 @@
       { "clue": "AFFAIR", "answer": "MATTER" }, 
       { "clue": "BED", "answer": "MATTRESS" }
     ]
+  },
+  {
+    "id": 23,
+    "date": "2025-07-27",
+    "words": [
+      { "clue": "COURAGE", "answer": "PLUCK" }, 
+      { "clue": "THIEVE", "answer": "POCKET" }, 
+      { "clue": "SHINE", "answer": "POLISH" }, 
+      { "clue": "COURTEOUS", "answer": "POLITE" }, 
+      { "clue": "NATIONAL AFFAIRS", "answer": "POLITICS" }
+    ]
   }
 ] 
