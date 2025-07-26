@@ -229,5 +229,16 @@
       { "clue": "TRAVEL", "answer": "COMMUTE" }, 
       { "clue": "APPRECIATE", "answer": "COMMEND" }
     ]
+  },
+  {
+    "id": 22,
+    "date": "2025-07-26",
+    "words": [
+      { "clue": "GALLERY", "answer": "MUSEUM" }, 
+      { "clue": "LEEWAY", "answer": "MARGIN" }, 
+      { "clue": "GROW", "answer": "MATURE" }, 
+      { "clue": "AFFAIR", "answer": "MATTER" }, 
+      { "clue": "BED", "answer": "MATTRESS" }
+    ]
   }
 ] 
