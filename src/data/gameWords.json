@@ -251,5 +251,60 @@
       { "clue": "COURTEOUS", "answer": "POLITE" }, 
       { "clue": "NATIONAL AFFAIRS", "answer": "POLITICS" }
     ]
+  },
+  {
+    "id": 24,
+    "date": "2025-07-28",
+    "words": [
+      { "clue": "DIVIDING WALL (OF NOSE)", "answer": "SEPTUM", "length":6 }, 
+      { "clue": "HUT", "answer": "SHACK", "length":5 }, 
+      { "clue": "THROW A BALL", "answer": "SHOOT", "length":5 }, 
+      { "clue": "BATHE", "answer": "SHOWER", "length":6 }, 
+      { "clue": "DISPLAYING", "answer": "SHOWING", "length":7 }
+    ]
+  },
+  {
+    "id": 25,
+    "date": "2025-07-29",
+    "words": [
+      { "clue": "DISCOVERED", "answer": "FOUND", "length":5 }, 
+      { "clue": "PREFER", "answer": "FAVOUR", "length":6 }, 
+      { "clue": "FRONT", "answer": "FACADE", "length":6 }, 
+      { "clue": "UNTRUTH", "answer": "FACTOID", "length":7 }, 
+      { "clue": "MILL", "answer": "FACTORY", "length":7 }
+    ]
+  },
+  {
+    "id": 26,
+    "date": "2025-07-30",
+    "words": [
+      { "clue": "SPAN", "answer": "RANGE", "length":5 }, 
+      { "clue": "PRIZE", "answer": "REWARD", "length":6 }, 
+      { "clue": "TRULY", "answer": "REALLY", "length":6 }, 
+      { "clue": "ALL SET", "answer": "READY", "length":5 }, 
+      { "clue": "KINDLE, FOR ONE", "answer": "READER", "length":6 }
+    ]
+  }, 
+  {
+    "id": 27,
+    "date": "2025-07-31",
+    "words": [
+      { "clue": "TIRED", "answer": "FATIGUED", "length":8 }, 
+      { "clue": "WORK", "answer": "FUNCTION", "length":8 }, 
+      { "clue": "PIVOT", "answer": "FULCRUM", "length":7 }, 
+      { "clue": "BACKFIELD POSITION", "answer": "FULLBACK", "length":8 }, 
+      { "clue": "BUCKMINSTER, FOR ONE", "answer": "FULLERENE", "length":9 }
+    ]
+  },
+  {
+    "id": 28,
+    "date": "2025-08-01",
+    "words": [
+      { "clue": "STREAM", "answer": "RIVER", "length":5 }, 
+      { "clue": "DIMINISH", "answer": "REDUCE", "length":6 }, 
+      { "clue": "ZONAL", "answer": "REGIONAL", "length":8 }, 
+      { "clue": "CONSIDER", "answer": "REGARD", "length":6 }, 
+      { "clue": "AMUSE", "answer": "REGALE", "length":6 }
+    ]
   }
 ] 
